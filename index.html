@@ -3,130 +3,146 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>OEA — Ton assistant de révision avec IA</title>
-<meta name="description" content="OEA analyse tes cours et t'aide à réviser ou à poser des questions à une IA.">
-<meta name="theme-color" content="#071120">
+<title>OEA — Ton assistant d'apprentissage</title>
+<meta name="description" content="OEA transforme tes cours en révisions et répond à tes questions avec l'IA.">
+<meta name="theme-color" content="#07111f">
 <style>
-:root{--bg:#06101d;--panel:#0b1829;--panel2:#0f2036;--line:#21385a;--text:#eff6ff;--muted:#9cb0c9;--blue:#6d5dfc;--blue2:#2798ff;--green:#18c69e;--shadow:0 20px 60px rgba(0,0,0,.35)}
-*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 15% 10%,rgba(83,105,255,.18),transparent 30%),radial-gradient(circle at 90% 30%,rgba(0,215,170,.12),transparent 28%),var(--bg);color:var(--text)}
-button,input,textarea{font:inherit}.app{display:grid;grid-template-columns:225px 1fr;min-height:100vh}.sidebar{border-right:1px solid rgba(255,255,255,.07);background:rgba(3,10,19,.72);backdrop-filter:blur(14px);padding:20px 14px;position:sticky;top:0;height:100vh}.brand{display:flex;align-items:center;gap:10px;padding:10px 12px 22px}.brandMark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#7b6bff,#339cff);font-size:20px;box-shadow:0 10px 30px rgba(75,100,255,.3)}.brand strong{font-size:24px}.brand small{color:var(--muted);display:block;font-size:11px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:#bfd0e4;text-align:left;padding:12px 14px;border-radius:12px;cursor:pointer;display:flex;gap:10px;align-items:center;transition:.2s}.nav button:hover,.nav button.active{background:linear-gradient(90deg,rgba(93,87,255,.3),rgba(31,156,255,.13));color:#fff;transform:translateX(2px)}.sideCard{margin-top:auto;position:absolute;left:14px;right:14px;bottom:18px;background:linear-gradient(180deg,rgba(18,43,72,.95),rgba(9,24,42,.95));border:1px solid rgba(86,131,197,.3);border-radius:18px;padding:14px;color:#c8d8ea}.sideCard b{display:block;color:white;margin-bottom:4px}.main{padding:18px 22px 34px;max-width:1480px;width:100%;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}.topbarLeft{display:flex;align-items:center;gap:15px}.tagline{color:var(--muted);font-size:14px}.modeSwitch{display:flex;gap:4px;background:#0c1b2e;border:1px solid #274264;padding:4px;border-radius:999px}.modeSwitch button{border:0;background:transparent;color:#bfd1e8;padding:10px 16px;border-radius:999px;cursor:pointer;font-weight:700}.modeSwitch button.active{background:linear-gradient(135deg,#6a58ff,#2a89ff);color:#fff;box-shadow:0 8px 22px rgba(71,91,255,.3)}.topActions{display:flex;gap:9px}.iconBtn{width:40px;height:40px;border-radius:12px;border:1px solid #28415f;background:#0b192b;color:#dce9f7;cursor:pointer}.workspace{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}.panel{border:1px solid #27476e;background:linear-gradient(180deg,rgba(10,27,47,.95),rgba(7,19,33,.95));border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.panel.revision{border-color:rgba(87,112,255,.75)}.panel.chat{border-color:rgba(12,207,169,.72)}.panelHead{padding:22px 22px 16px;display:flex;gap:14px;align-items:center}.headIcon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:23px;background:linear-gradient(135deg,#5b4cff,#2d8fff)}.chat .headIcon{background:linear-gradient(135deg,#05bd92,#11ddb0)}.panelHead h2{margin:0 0 4px;font-size:23px}.panelHead p{margin:0;color:var(--muted);font-size:13px}.panelBody{padding:0 20px 20px}.drop{border:1.5px dashed #5878ec;border-radius:18px;padding:28px 16px;text-align:center;background:linear-gradient(180deg,rgba(34,49,101,.18),rgba(10,25,43,.1));transition:.2s}.drop.drag{transform:scale(1.01);border-color:#8da4ff;background:rgba(56,79,158,.22)}.dropIcon{font-size:33px;margin-bottom:7px}.drop strong{display:block;font-size:16px}.drop small{color:var(--muted);display:block;margin-top:5px}.choose{display:inline-block;margin-top:14px;padding:11px 16px;border-radius:11px;background:linear-gradient(135deg,#6459ff,#2f8eff);color:#fff;font-weight:800;cursor:pointer}.choose input{display:none}.previewRow{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.thumb{width:74px;height:74px;border-radius:12px;object-fit:cover;border:1px solid #2d4d72}.filePill{padding:9px 12px;border-radius:10px;background:#0c1e33;border:1px solid #25405e;color:#b9cbe0;font-size:12px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.actionCard{min-height:142px;text-align:left;background:linear-gradient(180deg,#0e2037,#0b1a2e);border:1px solid #29476a;color:#eaf3ff;border-radius:16px;padding:14px;cursor:pointer;transition:.22s;position:relative}.actionCard:hover{transform:translateY(-5px);border-color:#5d70c7;box-shadow:0 14px 35px rgba(18,54,100,.25)}.actionCard:disabled{opacity:.5;cursor:wait}.actionIcon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(94,89,255,.2);margin-bottom:12px}.actionCard:nth-child(3) .actionIcon{background:rgba(0,205,157,.18)}.actionCard:nth-child(4) .actionIcon{background:rgba(242,129,74,.15)}.actionCard b{display:block;font-size:14px}.actionCard small{color:var(--muted);display:block;line-height:1.4;margin-top:5px}.arrow{position:absolute;right:10px;bottom:10px;width:27px;height:27px;border-radius:50%;background:#273477;display:grid;place-items:center}.activity{margin-top:15px;border:1px solid #203a59;background:#08182b;border-radius:15px;padding:13px}.activityTitle{color:#a7bfd9;font-size:12px;font-weight:700}.activityEmpty{color:#6f87a2;font-size:12px;margin-top:5px}.resultWrap{display:none;margin-top:18px}.resultWrap.show{display:block}.result{padding:20px;border-radius:18px;background:linear-gradient(180deg,#0b1d31,#081425);border:1px solid #29486b}.result h3{margin:0 0 12px}.resultContent{line-height:1.72;color:#dbe9f8}.resultContent h2,.resultContent h3{color:#fff}.resultContent li{margin:5px 0}.resultToolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.ghost{background:#0f233b;color:#d7e6f7;border:1px solid #2b496b;border-radius:10px;padding:9px 12px;cursor:pointer}.chatArea{height:605px;display:flex;flex-direction:column}.messages{padding:0 4px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:12px}.bubble{max-width:88%;padding:12px 14px;border-radius:16px;line-height:1.55;white-space:pre-wrap}.bubble.ai{align-self:flex-start;background:#102742;border:1px solid #28486a}.bubble.me{align-self:flex-end;background:linear-gradient(135deg,#2b4fc2,#315aef);border:1px solid #5273db}.chatComposer{margin-top:12px;display:flex;gap:9px;align-items:flex-end;border:1px solid #2a536c;background:#081b2c;padding:8px;border-radius:15px}.chatComposer textarea{flex:1;background:transparent;border:0;outline:0;color:#fff;resize:none;min-height:42px;max-height:120px;padding:8px}.send{width:44px;height:44px;border-radius:13px;border:0;background:linear-gradient(135deg,#12c89d,#25d6af);color:#06241f;font-weight:900;cursor:pointer}.send:disabled{opacity:.5;cursor:wait}.attach{width:38px;height:38px;border:0;background:transparent;color:#8fb0d3;cursor:pointer}.attach input{display:none}.chatHint{font-size:11px;color:#6e89a5;padding:0 4px}.sectionIntro{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:28px 2px 12px}.sectionIntro h3{margin:0;font-size:18px}.sectionIntro p{margin:4px 0 0;color:var(--muted);font-size:12px}.featureGrid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:14px}.infoCard{border:1px solid #203b5c;background:#0a1a2d;border-radius:18px;padding:18px}.infoCard h4{margin:0 0 9px}.infoCard p{margin:0;color:#9bb0c8;line-height:1.55;font-size:13px}.checks{display:grid;gap:8px;margin-top:14px}.check{display:flex;gap:9px;color:#c7d8eb;font-size:13px}.check span{color:#3de3a4}.hidden{display:none!important}.spinner{width:28px;height:28px;border:3px solid #29445e;border-top-color:#70a0ff;border-radius:50%;animation:spin .8s linear infinite;margin:8px auto}@keyframes spin{to{transform:rotate(360deg)}}@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}.fade{animation:fade .25s ease}.quizBox{display:grid;gap:12px}.choice{border:1px solid #2b4662;background:#0c2036;color:#d9e7f6;border-radius:12px;text-align:left;padding:12px;cursor:pointer}.choice:hover{border-color:#5c7ce8}.choice.correct{border-color:#2bd59e;background:rgba(38,209,150,.1)}.choice.wrong{border-color:#ff5e68;background:rgba(255,71,88,.08)}.score{font-weight:800;color:#9fe7ca}.flashGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.flash{height:150px;perspective:900px;cursor:pointer}.flashInner{width:100%;height:100%;position:relative;transition:transform .5s;transform-style:preserve-3d}.flash.flip .flashInner{transform:rotateY(180deg)}.flashFace{position:absolute;inset:0;backface-visibility:hidden;border-radius:15px;padding:16px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid #2a4567}.front{background:linear-gradient(180deg,#1a2348,#111a37);font-weight:800}.back{background:linear-gradient(180deg,#0d3b37,#0e2d2b);transform:rotateY(180deg);color:#c9f7eb}.emptyState{padding:28px;text-align:center;color:#8aa1ba}.footer{text-align:center;color:#58708b;font-size:12px;margin:26px 0 4px}
-@media(max-width:1050px){.workspace{grid-template-columns:1fr}.chatArea{height:520px}.featureGrid{grid-template-columns:1fr 1fr}.cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:760px){.app{grid-template-columns:1fr}.sidebar{position:static;height:auto;padding:10px}.brand{padding-bottom:8px}.sideCard{display:none}.nav{display:none}.main{padding:12px}.topbar{flex-direction:column;align-items:stretch}.topbarLeft{justify-content:space-between}.tagline{display:none}.modeSwitch{justify-content:center}.cards{grid-template-columns:1fr}.featureGrid{grid-template-columns:1fr}.panel{border-radius:18px}.chatArea{height:460px}}
+:root{--bg:#06101c;--panel:#0b1828;--panel2:#0f2033;--line:#29435f;--text:#f3f7ff;--muted:#91a7c0;--blue:#6b5cff;--blue2:#2e91ff;--mint:#18d2a0;--mint2:#0eb98d;--danger:#ff6673;--shadow:0 28px 80px rgba(0,0,0,.34)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 12% 8%,rgba(91,83,255,.16),transparent 27%),radial-gradient(circle at 85% 22%,rgba(11,211,172,.11),transparent 24%),var(--bg);color:var(--text)}
+button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px;margin:auto;padding:22px 22px 34px}.header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:11px}.logo{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#7f72ff,#2c91ff);font-size:22px;box-shadow:0 14px 35px rgba(72,93,255,.28)}.brandName{font-size:24px;font-weight:900;letter-spacing:.2px}.brandSub{font-size:11px;color:var(--muted);margin-top:2px}.modeNav{display:flex;gap:6px;padding:5px;border:1px solid #243b58;background:rgba(8,20,34,.82);border-radius:17px;backdrop-filter:blur(12px)}.modeBtn{border:0;background:transparent;color:#a9bdd4;padding:11px 18px;border-radius:12px;font-weight:800;cursor:pointer;transition:.2s}.modeBtn:hover{color:#fff;background:#11253c}.modeBtn.active.revision{color:#fff;background:linear-gradient(135deg,var(--blue),var(--blue2));box-shadow:0 10px 25px rgba(79,91,255,.25)}.modeBtn.active.chat{color:#05221c;background:linear-gradient(135deg,#1fe2b2,#10c49b);box-shadow:0 10px 25px rgba(19,211,168,.22)}.miniBtn{border:1px solid #2a4561;background:#0b1a2d;color:#dceaf8;border-radius:12px;padding:10px 13px;cursor:pointer}
+.stage{position:relative}.view{display:none;animation:enter .35s ease}.view.active{display:block}@keyframes enter{from{opacity:0;transform:translateY(10px) scale(.995)}to{opacity:1;transform:none}}
+.hero{border:1px solid #284362;background:linear-gradient(145deg,rgba(14,34,57,.96),rgba(7,18,31,.96));border-radius:28px;padding:34px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero:before{content:"";position:absolute;inset:auto -80px -130px auto;width:330px;height:330px;border-radius:50%;background:radial-gradient(circle,rgba(89,80,255,.23),transparent 68%);pointer-events:none}.heroTop{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border-radius:999px;background:rgba(102,89,255,.14);border:1px solid rgba(107,92,255,.35);color:#c4bdff;font-size:12px;font-weight:800}.hero h1{font-size:clamp(30px,4vw,52px);line-height:1.02;margin:16px 0 12px;max-width:740px}.hero p{margin:0;color:#9db2c9;max-width:710px;line-height:1.65;font-size:15px}.heroStats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:26px;max-width:780px}.stat{background:#0a1b2e;border:1px solid #24405d;border-radius:16px;padding:14px}.stat b{display:block;font-size:19px}.stat small{display:block;color:#7f96af;margin-top:3px}
+.uploadGrid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;margin-top:18px}.box{border:1px solid #284663;background:linear-gradient(180deg,rgba(11,28,47,.95),rgba(8,20,34,.95));border-radius:22px;box-shadow:var(--shadow)}.boxPad{padding:22px}.boxTitle{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}.boxTitle h2{margin:0;font-size:20px}.boxTitle p{margin:3px 0 0;color:#8198b1;font-size:12px}.drop{border:1.5px dashed #5d79db;border-radius:18px;padding:34px 18px;text-align:center;background:linear-gradient(180deg,rgba(49,64,123,.15),rgba(10,26,43,.05));transition:.2s}.drop.drag{transform:scale(1.01);border-color:#95a8ff;background:rgba(61,80,158,.2)}.dropIcon{font-size:35px}.drop strong{display:block;font-size:17px;margin-top:8px}.drop span{display:block;color:#8399b2;font-size:12px;margin-top:5px}.primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;background:linear-gradient(135deg,#695bff,#2d90ff);color:white;padding:12px 17px;border-radius:12px;font-weight:900;cursor:pointer;box-shadow:0 12px 28px rgba(73,91,255,.2)}.primary input{display:none}.previewRow{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.thumb{width:76px;height:76px;border-radius:12px;object-fit:cover;border:1px solid #2c4b6d}.pill{padding:10px 12px;border-radius:11px;background:#0c2035;border:1px solid #294663;color:#a9bdd3;font-size:12px;align-self:center}.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.action{border:1px solid #294967;background:linear-gradient(180deg,#0d2239,#091a2e);color:#eef5ff;border-radius:17px;padding:16px;text-align:left;cursor:pointer;min-height:152px;transition:.22s;position:relative}.action:hover{transform:translateY(-4px);border-color:#6779c9;box-shadow:0 14px 35px rgba(38,71,112,.23)}.action:disabled{opacity:.5;cursor:wait;transform:none}.actionIcon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(103,90,255,.18);font-size:20px;margin-bottom:15px}.action:nth-child(2) .actionIcon{background:rgba(44,145,255,.15)}.action:nth-child(3) .actionIcon{background:rgba(24,210,160,.14)}.action b{display:block;font-size:14px}.action small{display:block;color:#8298b0;line-height:1.45;margin-top:6px}.action .go{position:absolute;right:11px;bottom:11px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#202f66;color:#c9d2ff}.activity{margin-top:14px;padding:12px 13px;border-radius:13px;border:1px solid #223e59;background:#08182a;color:#89a0b8;font-size:12px}.result{margin-top:18px}.resultInner{padding:22px}.resultToolbar{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}.resultToolbar h3{margin:0;font-size:20px}.ghost{border:1px solid #2b4866;background:#0e2239;color:#d8e8f6;border-radius:10px;padding:9px 12px;cursor:pointer}.resultContent{line-height:1.75;color:#dce8f5}.resultContent h2,.resultContent h3{color:#fff}.resultContent li{margin:5px 0}.spinner{width:28px;height:28px;border:3px solid #2c4965;border-top-color:#78a0ff;border-radius:50%;animation:spin .8s linear infinite;margin:9px auto}@keyframes spin{to{transform:rotate(360deg)}}
+.quizBox{display:grid;gap:13px}.choice{border:1px solid #2a4967;background:#0d2239;color:#ddeafa;border-radius:12px;text-align:left;padding:13px;cursor:pointer}.choice:hover{border-color:#6276d0}.choice.correct{border-color:#2ad8a3;background:rgba(33,204,160,.1)}.choice.wrong{border-color:var(--danger);background:rgba(255,80,97,.08)}.score{font-weight:900;color:#9de8cf;font-size:18px}.flashGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}.flash{height:160px;perspective:900px;cursor:pointer}.flashInner{width:100%;height:100%;position:relative;transition:transform .5s;transform-style:preserve-3d}.flash.flip .flashInner{transform:rotateY(180deg)}.flashFace{position:absolute;inset:0;backface-visibility:hidden;border-radius:16px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid #2b4867}.front{background:linear-gradient(180deg,#1b2450,#121a37);font-weight:850}.back{background:linear-gradient(180deg,#0e403a,#0d2e2a);transform:rotateY(180deg);color:#d0fff3}
+.chatView{display:grid;grid-template-columns:1fr 310px;gap:18px}.chatBox{height:calc(100vh - 170px);min-height:620px;max-height:820px;display:flex;flex-direction:column}.chatHead{padding:20px 22px;border-bottom:1px solid #23425c;display:flex;align-items:center;justify-content:space-between;gap:10px}.chatTitle{display:flex;align-items:center;gap:12px}.chatIcon{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#19d5a4,#0ca986);font-size:21px}.chatHead h2{margin:0;font-size:20px}.chatHead p{margin:4px 0 0;color:#7891ab;font-size:12px}.messages{flex:1;overflow:auto;padding:22px;display:flex;flex-direction:column;gap:13px}.bubble{max-width:82%;padding:13px 15px;border-radius:17px;line-height:1.6;white-space:pre-wrap}.bubble.ai{align-self:flex-start;background:#0e2943;border:1px solid #294b6a}.bubble.me{align-self:flex-end;background:linear-gradient(135deg,#2d50c8,#3567f1);border:1px solid #5574d9}.composerWrap{padding:15px 17px;border-top:1px solid #23425c}.chatComposer{display:flex;gap:7px;align-items:flex-end;padding:7px;border:1px solid #2b5269;background:#081b2c;border-radius:15px}.chatComposer textarea{flex:1;min-height:44px;max-height:130px;resize:none;outline:0;border:0;background:transparent;color:#fff;padding:9px}.send{width:44px;height:44px;border:0;border-radius:13px;background:linear-gradient(135deg,#19d5a4,#0fbf94);color:#04261f;font-weight:950;cursor:pointer}.send:disabled{opacity:.45;cursor:wait}.attach{width:40px;height:40px;border:0;background:transparent;color:#89abc8;cursor:pointer}.attach input{display:none}.chatHint{font-size:11px;color:#69829b;padding:7px 3px 0}.chatSide{padding:22px}.chatSide h3{margin:0 0 8px;font-size:17px}.chatSide p{margin:0;color:#879db6;line-height:1.6;font-size:13px}.help{display:grid;gap:9px;margin-top:16px}.helpBtn{border:1px solid #2a4764;background:#0d2036;color:#dbe9f6;border-radius:12px;padding:11px;text-align:left;cursor:pointer}.helpBtn:hover{border-color:#5f76c9}.context{margin-top:16px;padding:13px;border-radius:14px;background:#081a2c;border:1px solid #213e5a;color:#91a7bd;font-size:12px;line-height:1.5}.footer{text-align:center;color:#526b85;font-size:11px;margin:22px 0 2px}.empty{padding:26px;text-align:center;color:#839ab3}.hidden{display:none!important}.fade{animation:enter .25s ease}
+@media(max-width:1000px){.uploadGrid{grid-template-columns:1fr}.chatView{grid-template-columns:1fr}.chatSide{display:none}.chatBox{height:calc(100vh - 170px);min-height:560px}.actions{grid-template-columns:1fr 1fr}}
+@media(max-width:680px){.shell{padding:12px}.header{align-items:flex-start;flex-wrap:wrap}.brandSub{display:none}.modeNav{width:100%;order:3}.modeBtn{flex:1;padding:11px 8px}.miniBtn{padding:9px 10px}.hero{padding:23px;border-radius:21px}.heroStats{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.hero h1{font-size:35px}.chatBox{min-height:560px}.bubble{max-width:92%}.resultInner,.boxPad{padding:17px}.drop{padding:28px 14px}}
 </style>
 </head>
 <body>
-<div class="app">
-  <aside class="sidebar">
-    <div class="brand"><div class="brandMark">✦</div><div><strong>OEA</strong><small>assistant de révision avec IA</small></div></div>
-    <div class="nav">
-      <button class="active" onclick="focusMode('revision',this)">⌂ <span>Accueil</span></button>
-      <button onclick="scrollToSection('result')">◷ <span>Historique</span></button>
-      <button onclick="focusMode('chat',this)">◌ <span>Discussion</span></button>
+<div class="app"><div class="shell">
+  <header class="header">
+    <div class="brand">
+      <div class="logo">✦</div>
+      <div><div class="brandName">OEA</div><div class="brandSub">Ton assistant d'apprentissage</div></div>
     </div>
-    <div class="sideCard"><b>💡 OEA</b><span>Apprends plus vite, plus simplement.</span></div>
-  </aside>
+    <nav class="modeNav" aria-label="Choix du mode">
+      <button class="modeBtn revision active" id="revisionTab" onclick="switchMode('revision')">📖 IA Révision</button>
+      <button class="modeBtn chat" id="chatTab" onclick="switchMode('chat')">💬 IA Questions</button>
+    </nav>
+    <button class="miniBtn" onclick="resetAll()">↻ Nouvelle session</button>
+  </header>
 
-  <main class="main">
-    <div class="topbar">
-      <div class="topbarLeft"><div class="tagline">Ton assistant de révision avec IA</div></div>
-      <div class="modeSwitch" role="tablist" aria-label="Modes OEA">
-        <button id="revisionTab" class="active" onclick="switchMode('revision')">📖 IA Révision</button>
-        <button id="chatTab" onclick="switchMode('chat')">💬 IA Questions</button>
+  <main class="stage">
+    <!-- REVISION MODE -->
+    <section id="revisionView" class="view active">
+      <div class="hero">
+        <div class="heroTop">
+          <div>
+            <span class="eyebrow">✨ MODE RÉVISION</span>
+            <h1>Transforme ton cours en entraînement.</h1>
+            <p>Ajoute les photos de ton cours. OEA les analyse puis prépare pour toi une fiche de révision, un quiz de 20 questions ou des flashcards.</p>
+            <div class="heroStats">
+              <div class="stat"><b>📷 8</b><small>pages maximum</small></div>
+              <div class="stat"><b>❓ 20</b><small>questions de quiz</small></div>
+              <div class="stat"><b>🧠 15</b><small>flashcards</small></div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="topActions"><button class="iconBtn" onclick="document.body.classList.toggle('dim')" title="Ambiance">☾</button><button class="iconBtn" title="Profil">◯</button></div>
-    </div>
 
-    <div class="workspace">
-      <section class="panel revision" id="revisionPanel">
-        <div class="panelHead"><div class="headIcon">📖</div><div><h2>IA Révision</h2><p>Analyse tes documents et crée des outils pour t'aider à réviser.</p></div></div>
-        <div class="panelBody">
+      <div class="uploadGrid">
+        <div class="box"><div class="boxPad">
+          <div class="boxTitle"><div><h2>1. Ajoute ton cours</h2><p>Photos nettes recommandées</p></div><span class="pill">Jusqu'à 8 pages</span></div>
           <div class="drop" id="dropZone">
-            <div class="dropIcon">🖼️</div>
-            <strong>Ajoute tes photos de cours</strong>
-            <small>Glisse-dépose tes images ici ou clique pour sélectionner<br>JPG, PNG, WEBP · jusqu'à 8 images</small>
-            <label class="choose">📁 Choisir mes photos<input id="fileInput" type="file" accept="image/*" multiple></label>
+            <div class="dropIcon">📸</div><strong>Glisse tes photos ici</strong><span>ou sélectionne-les depuis ton appareil</span>
+            <label class="primary" style="margin-top:15px">Choisir mes photos<input id="fileInput" type="file" accept="image/*" multiple></label>
           </div>
           <div class="previewRow" id="previewRow"></div>
-          <div class="cards">
-            <button class="actionCard" onclick="generate('course')"><div class="actionIcon">📄</div><b>Fiche de révision</b><small>Résumé clair et complet de ton cours</small><span class="arrow">→</span></button>
-            <button class="actionCard" onclick="generate('quiz')"><div class="actionIcon">❔</div><b>20 questions</b><small>QCM avec corrections et explications</small><span class="arrow">→</span></button>
-            <button class="actionCard" onclick="generate('cards')"><div class="actionIcon">🗂️</div><b>Flashcards</b><small>15 cartes pour mémoriser l'essentiel</small><span class="arrow">→</span></button>
-            <button class="actionCard" onclick="resetAll()"><div class="actionIcon">↻</div><b>Recommencer</b><small>Efface tout et repars de zéro</small><span class="arrow">→</span></button>
-          </div>
-          <div class="activity"><div class="activityTitle">◷ Dernière activité</div><div class="activityEmpty" id="activity">Aucune activité pour le moment</div></div>
-          <div class="resultWrap" id="result"><div class="result" id="resultBox"></div></div>
-        </div>
-      </section>
+          <div class="activity" id="activity">Aucune photo sélectionnée pour le moment.</div>
+        </div></div>
 
-      <section class="panel chat" id="chatPanel">
-        <div class="panelHead"><div class="headIcon">💬</div><div><h2>IA Questions</h2><p>Pose tes questions et obtiens des réponses claires et personnalisées.</p></div></div>
-        <div class="panelBody chatArea">
+        <div class="box"><div class="boxPad">
+          <div class="boxTitle"><div><h2>2. Choisis ton outil</h2><p>Le résultat s'affiche en grand juste ici</p></div></div>
+          <div class="actions">
+            <button class="action" onclick="generate('course')"><div class="actionIcon">📄</div><b>Faire un cours</b><small>Une fiche claire et fidèle à tes pages.</small><span class="go">→</span></button>
+            <button class="action" onclick="generate('quiz')"><div class="actionIcon">❔</div><b>Faire 20 questions</b><small>Un contrôle complet avec score et corrections.</small><span class="go">→</span></button>
+            <button class="action" onclick="generate('cards')"><div class="actionIcon">🗂️</div><b>Faire des flashcards</b><small>Des cartes à retourner pour mémoriser.</small><span class="go">→</span></button>
+          </div>
+        </div></div>
+      </div>
+
+      <section id="result" class="box result hidden"><div class="resultInner" id="resultBox"></div></section>
+    </section>
+
+    <!-- CHAT MODE -->
+    <section id="chatView" class="view">
+      <div class="chatView">
+        <div class="box chatBox">
+          <div class="chatHead">
+            <div class="chatTitle"><div class="chatIcon">💬</div><div><h2>IA Questions</h2><p>Pose-moi une question, demande une explication ou aide-toi de ton cours.</p></div></div>
+            <button class="ghost" onclick="clearChat()">Effacer</button>
+          </div>
           <div class="messages" id="messages">
-            <div class="bubble ai fade">Bonjour ! 👋<br><br>Je suis ton assistant IA. Pose-moi une question sur ton cours, demande-moi d'expliquer une notion ou aide-toi à comprendre un point difficile.<br><br>Tu peux aussi envoyer des photos dans <b>IA Révision</b> : je pourrai m'appuyer dessus pour répondre.</div>
+            <div class="bubble ai fade">Salut 👋 Je suis OEA.<br><br>Pose-moi une question sur ton cours ou sur une notion que tu veux comprendre.</div>
           </div>
-          <div class="chatHint" id="chatHint">Conseil : envoie tes photos dans IA Révision pour que mes réponses s'appuient sur ton cours.</div>
-          <div class="chatComposer">
-            <label class="attach" title="Ajouter une image">🖼️<input id="chatImageInput" type="file" accept="image/*" multiple></label>
-            <textarea id="chatInput" placeholder="Écris ta question ici…" rows="1"></textarea>
-            <button class="send" id="sendBtn" onclick="sendChat()">➤</button>
+          <div class="composerWrap">
+            <div class="chatComposer">
+              <label class="attach" title="Ajouter des pages de cours">📎<input id="chatImageInput" type="file" accept="image/*" multiple></label>
+              <textarea id="chatInput" placeholder="Écris ta question…" rows="1"></textarea>
+              <button class="send" id="sendBtn" onclick="sendChat()">➤</button>
+            </div>
+            <div class="chatHint" id="chatHint">Aucune page de cours jointe.</div>
           </div>
         </div>
-      </section>
-    </div>
 
-    <div class="sectionIntro"><div><h3>Analyse et logique du projet</h3><p>Une seule appli, deux modes qui travaillent ensemble.</p></div></div>
-    <div class="featureGrid">
-      <div class="infoCard"><h4>✨ Objectif OEA</h4><p>Créer un espace simple où tu peux transformer tes photos de cours en outils de révision, puis discuter avec une IA à propos de ce que tu apprends.</p><div class="checks"><div class="check"><span>✓</span> Interface simple et intuitive</div><div class="check"><span>✓</span> Deux modes distincts</div><div class="check"><span>✓</span> Photos de cours comme contexte</div><div class="check"><span>✓</span> Explications simples et claires</div></div></div>
-      <div class="infoCard"><h4>📖 IA Révision</h4><p>Analyse les pages de cours puis produit une fiche, exactement 20 questions ou 15 flashcards.</p><div class="checks"><div class="check"><span>✓</span> Fiche de révision</div><div class="check"><span>✓</span> Quiz de 20 questions</div><div class="check"><span>✓</span> Flashcards</div></div></div>
-      <div class="infoCard"><h4>💬 IA Questions</h4><p>Une zone de discussion pour demander une explication, vérifier une compréhension ou approfondir un point.</p><div class="checks"><div class="check"><span>✓</span> Conversation libre</div><div class="check"><span>✓</span> Contexte du cours possible</div><div class="check"><span>✓</span> Historique de la conversation</div></div></div>
-    </div>
-    <div class="footer">OEA — la puissance de l'IA au service de ta réussite ✦</div>
+        <aside class="box chatSide">
+          <h3>💡 Exemples</h3>
+          <p>Tu peux écrire naturellement, comme avec un assistant.</p>
+          <div class="help">
+            <button class="helpBtn" onclick="askExample('Explique-moi cette notion simplement.')">« Explique-moi cette notion simplement. »</button>
+            <button class="helpBtn" onclick="askExample('Fais-moi un exemple pour mieux comprendre.')">« Donne-moi un exemple. »</button>
+            <button class="helpBtn" onclick="askExample('Pose-moi une petite question pour vérifier si j’ai compris.')">« Vérifie si j’ai compris. »</button>
+          </div>
+          <div class="context">📷 Ajoute des pages avec <b>📎</b> et OEA pourra s'en servir comme contexte pour répondre.</div>
+        </aside>
+      </div>
+    </section>
   </main>
-</div>
+  <div class="footer">OEA — la puissance de l'IA au service de ta réussite ✦</div>
+</div></div>
+
 <script>
-const state={files:[], images:[], mode:'revision', quiz:[], qIndex:0, score:0, messages:[]};
+const state={files:[],images:[],mode:'revision',quiz:[],qIndex:0,score:0,messages:[]};
 const $=id=>document.getElementById(id);
 const drop=$('dropZone'); const fileInput=$('fileInput');
 fileInput.addEventListener('change',e=>addFiles([...e.target.files]));
 ['dragenter','dragover'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('drag')}));
 ['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('drag')}));
 drop.addEventListener('drop',e=>addFiles([...e.dataTransfer.files]));
-function addFiles(fs){const imgs=fs.filter(f=>f.type.startsWith('image/'));state.files=[...state.files,...imgs].slice(0,8); renderFiles(); $('activity').textContent=state.files.length+' photo(s) prêtes pour l\'IA';}
-function renderFiles(){const row=$('previewRow');row.innerHTML='';state.files.forEach(f=>{const img=document.createElement('img');img.className='thumb';img.alt=f.name;img.title=f.name;img.src=URL.createObjectURL(f);row.appendChild(img)}); if(state.files.length) row.insertAdjacentHTML('beforeend',`<div class="filePill">${state.files.length}/8 pages</div>`)}
-async function imageData(file){return new Promise((resolve,reject)=>{const img=new Image(),r=new FileReader();r.onload=()=>{img.onload=()=>{const max=1400;let w=img.width,h=img.height;const k=Math.min(1,max/Math.max(w,h));w=Math.max(1,Math.round(w*k));h=Math.max(1,Math.round(h*k));const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',.76))};img.onerror=reject;img.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
+function addFiles(fs){const imgs=fs.filter(f=>f.type.startsWith('image/'));state.files=[...state.files,...imgs].slice(0,8);state.images=[];renderFiles();$('activity').textContent=state.files.length+' photo(s) prête(s) pour OEA.';}
+function renderFiles(){const row=$('previewRow');row.innerHTML='';state.files.forEach(f=>{const img=document.createElement('img');img.className='thumb';img.alt=f.name;img.title=f.name;img.src=URL.createObjectURL(f);row.appendChild(img)});if(state.files.length)row.insertAdjacentHTML('beforeend',`<div class="pill">${state.files.length}/8 pages</div>`)}
+function imageData(file){return new Promise((resolve,reject)=>{const img=new Image(),r=new FileReader();r.onload=()=>{img.onload=()=>{const max=1400;let w=img.width,h=img.height;const k=Math.min(1,max/Math.max(w,h));w=Math.max(1,Math.round(w*k));h=Math.max(1,Math.round(h*k));const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',.76))};img.onerror=reject;img.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
 function md(s){let t=esc(s);t=t.replace(/^### (.*)$/gm,'<h3>$1</h3>').replace(/^## (.*)$/gm,'<h2>$1</h2>').replace(/^# (.*)$/gm,'<h2>$1</h2>').replace(/^[-•] (.*)$/gm,'<li>$1</li>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');return t}
-function switchMode(mode){state.mode=mode;$('revisionTab').classList.toggle('active',mode==='revision');$('chatTab').classList.toggle('active',mode==='chat');if(mode==='chat'){$('chatInput').focus();} }
-function focusMode(mode,btn){document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');switchMode(mode);document.getElementById(mode==='chat'?'chatPanel':'revisionPanel').scrollIntoView({behavior:'smooth',block:'start'})}
-function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'})}
-async function generate(action){
- const result=$('result'),box=$('resultBox'); result.classList.add('show'); box.innerHTML='<div class="spinner"></div><div style="text-align:center;color:#9ab0c8">🤖 L\'IA analyse tes pages…</div>';
- if(!state.files.length){box.innerHTML='<div class="emptyState">📷 Ajoute d\'abord au moins une photo de ton cours.</div>';return}
- document.querySelectorAll('.actionCard').forEach(b=>b.disabled=true);
- try{state.images=[];for(const f of state.files)state.images.push(await imageData(f));
-   const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,images:state.images})});
-   const data=await r.json();if(!r.ok)throw new Error(data.error||'Erreur serveur');
-   $('activity').textContent=action==='course'?'Fiche de révision générée':action==='quiz'?'Quiz de 20 questions généré':'15 flashcards générées';
-   if(action==='course')showCourse(data.text);else if(action==='quiz')showQuiz(data.text);else showCards(data.text);
-   scrollToSection('result');
- }catch(e){box.innerHTML=`<div class="emptyState" style="color:#ff969d">❌ ${esc(e.message)}</div>`} finally{document.querySelectorAll('.actionCard').forEach(b=>b.disabled=false)}
-}
+function switchMode(mode){state.mode=mode;const rev=mode==='revision';$('revisionTab').classList.toggle('active',rev);$('chatTab').classList.toggle('active',!rev);$('revisionView').classList.toggle('active',rev);$('chatView').classList.toggle('active',!rev);if(!rev)setTimeout(()=>$('chatInput').focus(),120)}
+async function ensureImages(){if(state.images.length)return state.images;state.images=[];for(const f of state.files)state.images.push(await imageData(f));return state.images}
+async function generate(action){const result=$('result'),box=$('resultBox');result.classList.remove('hidden');box.innerHTML='<div class="spinner"></div><div style="text-align:center;color:#94abc2">🤖 OEA analyse tes pages…</div>';if(!state.files.length){box.innerHTML='<div class="empty">📷 Ajoute d’abord au moins une photo de ton cours.</div>';return}document.querySelectorAll('.action').forEach(b=>b.disabled=true);try{const images=await ensureImages();const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,images})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Erreur serveur');if(action==='course')showCourse(data.text);else if(action==='quiz')showQuiz(data.text);else showCards(data.text)}catch(e){box.innerHTML=`<div class="empty" style="color:#ff9aa2">❌ ${esc(e.message)}</div>`}finally{document.querySelectorAll('.action').forEach(b=>b.disabled=false)}}
 function safeJSON(raw){let s=String(raw||'').trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/\s*```$/,'').trim();try{return JSON.parse(s)}catch{const a=s.indexOf('{'),b=s.lastIndexOf('}');if(a>=0&&b>a)try{return JSON.parse(s.slice(a,b+1))}catch{}throw new Error('Réponse IA invalide. Réessaie avec des photos plus nettes.')}}
-function resultHeader(title,sub=''){return `<div class="resultToolbar"><div><h3>${title}</h3>${sub?`<div style="color:#8097b1;font-size:12px">${sub}</div>`:''}</div><button class="ghost" onclick="resetResult()">↻ Recommencer</button></div>`}
+function resultHeader(title,sub=''){return `<div class="resultToolbar"><div><h3>${title}</h3>${sub?`<div style="color:#8097b1;font-size:12px;margin-top:3px">${sub}</div>`:''}</div><button class="ghost" onclick="resetResult()">↻ Fermer</button></div>`}
 function showCourse(text){$('resultBox').innerHTML=resultHeader('📄 Ta fiche de révision IA','Basée uniquement sur les photos envoyées')+`<div class="resultContent">${md(text)}</div>`}
 function showCards(raw){const d=safeJSON(raw),cards=d.cards||[];$('resultBox').innerHTML=resultHeader('🗂️ Tes flashcards','Clique sur une carte pour la retourner')+`<div class="flashGrid">${cards.map((c,i)=>`<div class="flash" onclick="this.classList.toggle('flip')"><div class="flashInner"><div class="flashFace front">${esc(c.question||('Carte '+(i+1)))}</div><div class="flashFace back">${esc(c.answer||'')}</div></div></div>`).join('')}</div>`}
 function showQuiz(raw){const d=safeJSON(raw);state.quiz=d.questions||[];state.qIndex=0;state.score=0;renderQuestion()}
-function renderQuestion(){const box=$('resultBox');if(state.qIndex>=state.quiz.length){box.innerHTML=resultHeader('🎉 Quiz terminé')+`<div class="score">Score : ${state.score} / ${state.quiz.length}</div><p style="color:#a4b8ce">Refais le quiz pour t\'entraîner encore.</p><button class="ghost" onclick="state.qIndex=0;state.score=0;renderQuestion()">↻ Refaire le quiz</button>`;return}const q=state.quiz[state.qIndex];box.innerHTML=resultHeader(`❔ Question ${state.qIndex+1} / ${state.quiz.length}`)+`<div class="quizBox"><div style="font-size:19px;font-weight:800">${esc(q.question)}</div><div id="choices">${(q.choices||[]).map((c,i)=>`<button class="choice" onclick="answerQuestion(${i})">${String.fromCharCode(65+i)}. ${esc(c)}</button>`).join('')}</div><div id="feedback" style="min-height:34px;color:#bcd0e5"></div></div>`}
+function renderQuestion(){const box=$('resultBox');if(state.qIndex>=state.quiz.length){box.innerHTML=resultHeader('🎉 Quiz terminé',`Score final : ${state.score} / ${state.quiz.length}`)+`<div class="score">Bravo pour ton entraînement !</div><div style="margin-top:12px"><button class="ghost" onclick="state.qIndex=0;state.score=0;renderQuestion()">↻ Refaire le quiz</button></div>`;return}const q=state.quiz[state.qIndex];box.innerHTML=resultHeader(`❔ Question ${state.qIndex+1} / ${state.quiz.length}`)+`<div class="quizBox"><div style="font-size:19px;font-weight:850">${esc(q.question)}</div><div id="choices">${(q.choices||[]).map((c,i)=>`<button class="choice" onclick="answerQuestion(${i})">${String.fromCharCode(65+i)}. ${esc(c)}</button>`).join('')}</div><div id="feedback" style="min-height:36px;color:#bcd0e5"></div></div>`}
 function answerQuestion(i){const q=state.quiz[state.qIndex],btns=[...document.querySelectorAll('.choice')];btns.forEach(b=>b.disabled=true);if(i===q.answer){state.score++;btns[i]?.classList.add('correct');$('feedback').innerHTML='✅ Correct ! '+esc(q.explanation||'')}else{btns[i]?.classList.add('wrong');btns[q.answer]?.classList.add('correct');$('feedback').innerHTML='❌ '+esc(q.explanation||'')}$('feedback').insertAdjacentHTML('beforeend','<br><button class="ghost" style="margin-top:8px" onclick="state.qIndex++;renderQuestion()">Question suivante →</button>')}
-function resetResult(){$('result').classList.remove('show');$('resultBox').innerHTML=''}
-function resetAll(){state.files=[];state.images=[];state.quiz=[];state.messages=[];$('previewRow').innerHTML='';$('fileInput').value='';$('activity').textContent='Aucune activité pour le moment';resetResult();$('messages').innerHTML='<div class="bubble ai fade">Tout est effacé ✨<br><br>Tu peux recommencer avec de nouvelles pages de cours.</div>'}
-$('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
-async function sendChat(){const input=$('chatInput'),text=input.value.trim();if(!text)return;addBubble('me',text);input.value='';$('sendBtn').disabled=true;const loading=document.createElement('div');loading.className='bubble ai fade';loading.id='chatLoading';loading.innerHTML='<div class="spinner"></div>';$('messages').appendChild(loading);$('messages').scrollTop=$('messages').scrollHeight;try{
- let images=state.images;if(!images.length && state.files.length){images=[];for(const f of state.files)images.push(await imageData(f));state.images=images}
- state.messages.push({role:'user',text});const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'chat',messages:state.messages.slice(-12),images})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Erreur serveur');loading.remove();addBubble('ai',data.text||'Je n\'ai pas reçu de réponse.');state.messages.push({role:'assistant',text:data.text||''});
- }catch(e){loading.remove();addBubble('ai','❌ '+e.message)}finally{$('sendBtn').disabled=false;input.focus()}}
+function resetResult(){$('result').classList.add('hidden');$('resultBox').innerHTML=''}
+function clearChat(){state.messages=[];$('messages').innerHTML='<div class="bubble ai fade">Conversation effacée ✨<br><br>Pose-moi une nouvelle question.</div>'}
+async function sendChat(){const input=$('chatInput'),text=input.value.trim();if(!text)return;addBubble('me',text);input.value='';$('sendBtn').disabled=true;const loading=document.createElement('div');loading.className='bubble ai fade';loading.id='chatLoading';loading.innerHTML='<div class="spinner"></div>';$('messages').appendChild(loading);$('messages').scrollTop=$('messages').scrollHeight;try{let images=await ensureImages();state.messages.push({role:'user',text});const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'chat',messages:state.messages.slice(-12),images})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Erreur serveur');loading.remove();addBubble('ai',data.text||'Je n’ai pas reçu de réponse.');state.messages.push({role:'assistant',text:data.text||''})}catch(e){loading.remove();addBubble('ai','❌ '+e.message)}finally{$('sendBtn').disabled=false;input.focus()}}
 function addBubble(who,text){const b=document.createElement('div');b.className='bubble '+(who==='me'?'me':'ai')+' fade';b.innerHTML=who==='ai'?md(text):esc(text);$('messages').appendChild(b);$('messages').scrollTop=$('messages').scrollHeight}
-$('chatImageInput').addEventListener('change',async e=>{const fs=[...e.target.files].filter(f=>f.type.startsWith('image/'));if(!fs.length)return;state.files=[...state.files,...fs].slice(0,8);renderFiles();state.images=[];for(const f of state.files)state.images.push(await imageData(f));$('chatHint').textContent=state.files.length+' page(s) de cours disponibles comme contexte pour IA Questions.';switchMode('chat');});
+function askExample(text){$('chatInput').value=text;$('chatInput').focus()}
+$('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
+$('chatImageInput').addEventListener('change',async e=>{const fs=[...e.target.files].filter(f=>f.type.startsWith('image/'));if(!fs.length)return;state.files=[...state.files,...fs].slice(0,8);state.images=[];for(const f of state.files)state.images.push(await imageData(f));$('chatHint').textContent=state.files.length+' page(s) de cours ajoutée(s) comme contexte.';});
+function resetAll(){state.files=[];state.images=[];state.quiz=[];state.qIndex=0;state.score=0;state.messages=[];$('previewRow').innerHTML='';$('fileInput').value='';$('chatImageInput').value='';$('activity').textContent='Aucune photo sélectionnée pour le moment.';$('chatHint').textContent='Aucune page de cours jointe.';resetResult();clearChat();switchMode('revision');}
 </script>
 </body>
 </html>
