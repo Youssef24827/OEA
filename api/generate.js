@@ -1,55 +1,112 @@
-export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Méthode non autorisée."
-    });
+const MODEL = "gemini-3.5-flash-lite";
+const ENDPOINT =
+  `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+
+function json(res, status, body) {
+  return res.status(status).json(body);
+}
+
+function imagePart(dataUrl) {
+  const match = /^data:(image\/[^;]+);base64,(.+)$/.exec(dataUrl || "");
+
+  if (!match) {
+    throw new Error("Format d'image non reconnu.");
   }
 
-  try {
-    const { action, images } = req.body || {};
-
-    if (!action || !Array.isArray(images) || images.length === 0) {
-      return res.status(400).json({
-        error: "Il faut envoyer une action et au moins une image."
-      });
+  return {
+    inline_data: {
+      mime_type: match[1],
+      data: match[2]
     }
+  };
+}
 
-    if (!process.env.GEMINI_API_KEY) {
-      return res.status(500).json({
-        error: "GEMINI_API_KEY n'est pas configurée sur Vercel."
-      });
+async function callGemini(contents, options = {}) {
+  const body = {
+    contents,
+    generationConfig: {
+      maxOutputTokens: options.maxOutputTokens || 7000
     }
+  };
 
-    const prompts = {
-      course: `Tu es un professeur patient et clair.
+  if (options.systemInstruction) {
+    body.system_instruction = {
+      parts: [
+        {
+          text: options.systemInstruction
+        }
+      ]
+    };
+  }
 
-Analyse uniquement le contenu des photos du cours.
+  if (options.responseMimeType) {
+    body.generationConfig.responseMimeType = options.responseMimeType;
+  }
 
-Crée une fiche de révision en français, fidèle aux documents, avec :
+  const response = await fetch(ENDPOINT, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-goog-api-key": process.env.GEMINI_API_KEY
+    },
+    body: JSON.stringify(body)
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    const message =
+      data?.error?.message ||
+      `Erreur Gemini (${response.status}).`;
+
+    const error = new Error(message);
+    error.status = response.status;
+    throw error;
+  }
+
+  const text = data?.candidates?.[0]?.content?.parts
+    ?.map(part => part.text || "")
+    .join("\n")
+    .trim();
+
+  if (!text) {
+    throw new Error("Gemini n'a renvoyé aucun texte.");
+  }
+
+  return text;
+}
+
+function buildRevisionPrompt(action) {
+  if (action === "course") {
+    return `Tu es OEA, un professeur de révision patient et clair.
+
+Analyse uniquement les photos du cours fournies par l'utilisateur.
+
+Crée une fiche de révision fidèle au cours en français avec :
 - un titre
 - les notions importantes
 - des explications simples
 - les définitions
-- les dates et chiffres utiles s'ils apparaissent
-- une partie "À retenir"
+- les dates et chiffres présents dans les photos
+- une section "À retenir"
 
-N'invente aucune information absente des photos.
-Utilise du Markdown.`,
+N'invente aucune information absente des photos.`;
+  }
 
-      quiz: `Tu es un professeur qui prépare un contrôle.
+  if (action === "quiz") {
+    return `Tu es OEA, un professeur qui prépare un contrôle.
 
-Analyse uniquement le contenu des photos du cours.
+Analyse uniquement les photos du cours fournies.
 
 Crée exactement 20 questions à choix multiple en français.
-Chaque question doit avoir 4 réponses.
-Une seule réponse doit être correcte.
-Ajoute une courte explication pour chaque réponse.
+Chaque question doit avoir 4 propositions.
+Une seule proposition est correcte.
+Ajoute une courte explication.
 
-Les questions doivent couvrir les différentes parties du cours.
+Couvre les différentes parties du cours.
+N'invente aucune information.
 
-N'invente aucune information absente des photos.
-
-Retourne uniquement un JSON valide sous cette forme :
+Réponds UNIQUEMENT avec un JSON valide selon ce format :
 
 {
   "questions": [
@@ -62,21 +119,21 @@ Retourne uniquement un JSON valide sous cette forme :
   ]
 }
 
-"answer" doit être l'index de la bonne réponse : 0, 1, 2 ou 3.`,
+"answer" doit être 0, 1, 2 ou 3.`;
+  }
 
-      cards: `Tu es un professeur qui crée des flashcards.
+  return `Tu es OEA, un professeur qui crée des flashcards.
 
-Analyse uniquement le contenu des photos du cours.
+Analyse uniquement les photos du cours fournies.
 
-Crée 15 flashcards en français, utiles pour mémoriser les notions essentielles.
-
-Chaque carte doit avoir :
+Crée exactement 15 flashcards en français.
+Chaque flashcard doit avoir :
 - une question courte
 - une réponse claire
 
-N'invente aucune information absente des photos.
+N'invente aucune information.
 
-Retourne uniquement un JSON valide sous cette forme :
+Réponds UNIQUEMENT avec un JSON valide selon ce format :
 
 {
   "cards": [
@@ -85,97 +142,205 @@ Retourne uniquement un JSON valide sous cette forme :
       "answer": "..."
     }
   ]
-}`
-    };
+}`;
+}
 
-    const prompt = prompts[action];
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return json(res, 405, {
+      error: "Méthode non autorisée."
+    });
+  }
 
-    if (!prompt) {
-      return res.status(400).json({
-        error: "Action inconnue."
+  if (!process.env.GEMINI_API_KEY) {
+    return json(res, 500, {
+      error: "GEMINI_API_KEY n'est pas configurée sur Vercel."
+    });
+  }
+
+  try {
+    const {
+      action,
+      images = [],
+      messages = []
+    } = req.body || {};
+
+    if (!action) {
+      return json(res, 400, {
+        error: "Action manquante."
       });
     }
 
-    const parts = [
-      {
-        text: prompt
-      }
-    ];
+    // ==========================================
+    // IA RÉVISION
+    // ==========================================
 
-    // Maximum 8 images
-    for (const image of images.slice(0, 8)) {
-      if (typeof image !== "string") continue;
-
-      const match = image.match(/^data:(image\/[^;]+);base64,(.+)$/);
-
-      if (!match) {
-        return res.status(400).json({
-          error: "Format d'image non reconnu."
+    if (["course", "quiz", "cards"].includes(action)) {
+      if (!Array.isArray(images) || images.length === 0) {
+        return json(res, 400, {
+          error: "Ajoute au moins une photo de cours."
         });
       }
 
-      parts.push({
-        inline_data: {
-          mime_type: match[1],
-          data: match[2]
+      const parts = [
+        {
+          text: buildRevisionPrompt(action)
         }
+      ];
+
+      for (const image of images.slice(0, 8)) {
+        parts.push(imagePart(image));
+      }
+
+      const text = await callGemini(
+        [
+          {
+            role: "user",
+            parts
+          }
+        ],
+        {
+          responseMimeType:
+            action === "quiz" || action === "cards"
+              ? "application/json"
+              : null,
+          maxOutputTokens:
+            action === "course" ? 5000 : 7000
+        }
+      );
+
+      return json(res, 200, {
+        text
       });
     }
 
-    const response = await fetch(
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-goog-api-key": process.env.GEMINI_API_KEY
-        },
-        body: JSON.stringify({
-          contents: [
+    // ==========================================
+    // IA QUESTIONS / CHAT
+    // ==========================================
+
+    if (action === "chat") {
+      const allMessages = Array.isArray(messages)
+        ? messages.filter(
+            message =>
+              message &&
+              message.text &&
+              (message.role === "user" ||
+                message.role === "assistant")
+          )
+        : [];
+
+      if (allMessages.length === 0) {
+        return json(res, 400, {
+          error: "Écris d'abord une question."
+        });
+      }
+
+      // Le dernier message envoyé par l'utilisateur
+      // devient le nouveau message à traiter.
+      const lastUserIndex = allMessages
+        .map(message => message.role)
+        .lastIndexOf("user");
+
+      if (lastUserIndex === -1) {
+        return json(res, 400, {
+          error: "Question utilisateur introuvable."
+        });
+      }
+
+      const currentMessage = allMessages[lastUserIndex];
+
+      // Historique = tout ce qui précède le message actuel.
+      const history = allMessages.slice(0, lastUserIndex);
+
+      const contents = [];
+
+      // On garde uniquement l'historique proprement alterné :
+      // user -> model -> user -> model...
+      for (const message of history) {
+        contents.push({
+          role: message.role === "assistant"
+            ? "model"
+            : "user",
+          parts: [
             {
-              role: "user",
-              parts: parts
+              text: String(message.text)
             }
           ]
-        })
+        });
       }
-    );
 
-    const data = await response.json();
+      // Nouveau message utilisateur.
+      const currentParts = [
+        {
+          text: String(currentMessage.text)
+        }
+      ];
 
-    if (!response.ok) {
-      console.error("GEMINI API ERROR:", data);
+      // Les photos du cours sont ajoutées au message actuel.
+      // Ainsi, on évite un message "user" séparé juste avant.
+      if (Array.isArray(images) && images.length > 0) {
+        currentParts.unshift({
+          text:
+            "Voici les pages du cours de l'utilisateur. " +
+            "Utilise-les comme contexte pour répondre à sa question. " +
+            "Si la réponse n'est pas présente dans le cours, dis-le clairement " +
+            "et n'invente pas d'information."
+        });
 
-      return res.status(response.status).json({
-        error:
-          data?.error?.message ||
-          "Erreur lors de l'appel à Gemini."
+        for (const image of images.slice(0, 8)) {
+          currentParts.push(imagePart(image));
+        }
+      }
+
+      contents.push({
+        role: "user",
+        parts: currentParts
+      });
+
+      const text = await callGemini(contents, {
+        systemInstruction:
+          `Tu es OEA, un assistant de révision intelligent.
+
+Réponds toujours en français.
+Sois patient, clair et pédagogique.
+Explique les notions simplement.
+Tu peux répondre à des questions générales.
+
+Quand des photos de cours sont fournies, utilise-les en priorité.
+N'invente jamais une information présentée comme venant du cours.
+Quand une information n'est pas dans le cours, dis-le clairement.`,
+        maxOutputTokens: 4000
+      });
+
+      return json(res, 200, {
+        text
       });
     }
 
-    const text =
-      data?.candidates?.[0]?.content?.parts
-        ?.filter((part) => typeof part.text === "string")
-        ?.map((part) => part.text)
-        ?.join("\n") || "";
-
-    if (!text) {
-      return res.status(500).json({
-        error: "Gemini n'a renvoyé aucun texte."
-      });
-    }
-
-    return res.status(200).json({
-      text: text
+    return json(res, 400, {
+      error: "Action inconnue."
     });
 
   } catch (error) {
     console.error("OEA GEMINI ERROR:", error);
 
-    return res.status(500).json({
-      error:
-        error?.message ||
-        "Une erreur est survenue pendant la génération IA."
+    const status =
+      Number.isInteger(error?.status) &&
+      error.status >= 400
+        ? error.status
+        : 500;
+
+    let message =
+      error?.message ||
+      "Une erreur est survenue pendant la génération IA.";
+
+    if (status === 429) {
+      message =
+        "Gemini a atteint sa limite du moment. Attends un peu puis réessaie.";
+    }
+
+    return json(res, status, {
+      error: `Erreur IA : ${message}`
     });
   }
 }
