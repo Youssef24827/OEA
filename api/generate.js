@@ -1,5 +1,3 @@
-import OpenAI from "openai";
-
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({
@@ -16,9 +14,9 @@ export default async function handler(req, res) {
       });
     }
 
-    if (!process.env.OPENAI_API_KEY) {
+    if (!process.env.GEMINI_API_KEY) {
       return res.status(500).json({
-        error: "OPENAI_API_KEY n'est pas configurée sur Vercel."
+        error: "GEMINI_API_KEY n'est pas configurée sur Vercel."
       });
     }
 
@@ -64,8 +62,7 @@ Retourne uniquement un JSON valide sous cette forme :
   ]
 }
 
-"answer" doit être l'index de la bonne réponse :
-0, 1, 2 ou 3.`,
+"answer" doit être l'index de la bonne réponse : 0, 1, 2 ou 3.`,
 
       cards: `Tu es un professeur qui crée des flashcards.
 
@@ -99,56 +96,86 @@ Retourne uniquement un JSON valide sous cette forme :
       });
     }
 
-    const content = [
+    const parts = [
       {
-        type: "input_text",
         text: prompt
       }
     ];
 
-    // Maximum 8 images par demande
+    // Maximum 8 images
     for (const image of images.slice(0, 8)) {
-      content.push({
-        type: "input_image",
-        image_url: image,
-        detail: "high"
+      if (typeof image !== "string") continue;
+
+      const match = image.match(/^data:(image\/[^;]+);base64,(.+)$/);
+
+      if (!match) {
+        return res.status(400).json({
+          error: "Format d'image non reconnu."
+        });
+      }
+
+      parts.push({
+        inline_data: {
+          mime_type: match[1],
+          data: match[2]
+        }
       });
     }
 
-    const client = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY
-    });
+    const response = await fetch(
+      "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-goog-api-key": process.env.GEMINI_API_KEY
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              role: "user",
+              parts: parts
+            }
+          ]
+        })
+      }
+    );
 
-    const response = await client.responses.create({
-      model: "gpt-5.6-luna",
-      input: [
-        {
-          role: "user",
-          content: content
-        }
-      ],
-      max_output_tokens: action === "course" ? 5000 : 7000
-    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("GEMINI API ERROR:", data);
+
+      return res.status(response.status).json({
+        error:
+          data?.error?.message ||
+          "Erreur lors de l'appel à Gemini."
+      });
+    }
+
+    const text =
+      data?.candidates?.[0]?.content?.parts
+        ?.filter((part) => typeof part.text === "string")
+        ?.map((part) => part.text)
+        ?.join("\n") || "";
+
+    if (!text) {
+      return res.status(500).json({
+        error: "Gemini n'a renvoyé aucun texte."
+      });
+    }
 
     return res.status(200).json({
-      text: response.output_text || ""
+      text: text
     });
 
   } catch (error) {
-    console.error("OEA IA ERROR:", error);
+    console.error("OEA GEMINI ERROR:", error);
 
-    const message =
-      error?.error?.message ||
-      error?.message ||
-      "Erreur inconnue lors de l'appel à l'IA.";
-
-    const status =
-      Number.isInteger(error?.status) && error.status >= 400
-        ? error.status
-        : 500;
-
-    return res.status(status).json({
-      error: `Erreur IA : ${message}`
+    return res.status(500).json({
+      error:
+        error?.message ||
+        "Une erreur est survenue pendant la génération IA."
     });
   }
 }
