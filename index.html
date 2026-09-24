@@ -1,59 +1,132 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>OEA — Ton assistant de révision avec IA</title>
-<meta name="description" content="OEA transforme les photos de tes cours en fiches de révision, quiz et flashcards avec l’IA.">
-<meta name="robots" content="index,follow">
+<meta name="description" content="OEA analyse tes cours et t'aide à réviser ou à poser des questions à une IA.">
+<meta name="theme-color" content="#071120">
 <style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#eef2ff,#dbeafe);color:#172033;min-height:100vh}header{padding:25px 6%;font-size:25px;font-weight:900}header span{color:#635bff}main{max-width:1050px;margin:auto;padding:10px 20px 50px}.hero{text-align:center;padding:25px 0 30px;animation:up .6s}h1{font-size:clamp(38px,6vw,64px);margin:0 0 12px;letter-spacing:-3px}h1 span{color:#635bff}.hero p{color:#667085;font-size:19px}.upload,.out{background:#fff;border-radius:25px;padding:35px;box-shadow:0 15px 45px #0001}.upload{text-align:center;border:2px dashed #b9b5ff;transition:.2s}.upload.drag{transform:scale(1.02);border-color:#635bff}.icon{font-size:52px;animation:float 3s infinite}.choose{display:inline-block;background:#635bff;color:#fff;padding:14px 22px;border-radius:12px;font-weight:bold;cursor:pointer}input{display:none}.files{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:15px}.file{background:#eef2ff;padding:8px 12px;border-radius:9px;font-size:13px}.actions{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:22px 0}.action{background:#fff;border:0;border-radius:20px;padding:25px;cursor:pointer;box-shadow:0 10px 30px #0001;transition:.2s}.action:hover{transform:translateY(-5px)}.action:disabled{opacity:.55;cursor:wait}.action b{display:block;font-size:19px;margin-top:8px}.action small{color:#667085}.out{display:none;animation:pop .3s}.out.show{display:block}.notice{background:#fff7ed;padding:12px;border-radius:10px;color:#9a3412;margin-bottom:18px}.markdown{line-height:1.7}.markdown h2,.markdown h3{margin-top:22px}.flashgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.flash{height:160px;perspective:700px;cursor:pointer}.inner{width:100%;height:100%;position:relative;transition:.5s;transform-style:preserve-3d}.flash.flip .inner{transform:rotateY(180deg)}.face{position:absolute;inset:0;backface-visibility:hidden;border-radius:15px;padding:18px;display:flex;align-items:center;justify-content:center;text-align:center}.front{background:#f3f1ff;font-weight:bold}.back{background:#ecfdf3;transform:rotateY(180deg)}.answers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ans,.next{padding:14px;border-radius:11px;cursor:pointer;font-size:16px}.ans{background:white;border:2px solid #e5e7eb;text-align:left}.next{background:#111827;color:white;border:0;margin-top:16px}.feedback{font-weight:bold;min-height:30px;margin:15px 0}.spinner{margin:20px auto;width:32px;height:32px;border:4px solid #ddd;border-top-color:#635bff;border-radius:50%;animation:spin .8s linear infinite}.topline{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap}.restart{border:0;background:#eef2ff;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:bold}.status{color:#667085}.error{background:#fef2f2;color:#991b1b;padding:14px;border-radius:12px}li{margin:8px 0}@keyframes spin{to{transform:rotate(360deg)}}@keyframes float{50%{transform:translateY(-8px)}}@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}@keyframes pop{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:none}}@media(max-width:650px){.actions,.answers{grid-template-columns:1fr}.upload{padding:25px}}
+:root{--bg:#06101d;--panel:#0b1829;--panel2:#0f2036;--line:#21385a;--text:#eff6ff;--muted:#9cb0c9;--blue:#6d5dfc;--blue2:#2798ff;--green:#18c69e;--shadow:0 20px 60px rgba(0,0,0,.35)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 15% 10%,rgba(83,105,255,.18),transparent 30%),radial-gradient(circle at 90% 30%,rgba(0,215,170,.12),transparent 28%),var(--bg);color:var(--text)}
+button,input,textarea{font:inherit}.app{display:grid;grid-template-columns:225px 1fr;min-height:100vh}.sidebar{border-right:1px solid rgba(255,255,255,.07);background:rgba(3,10,19,.72);backdrop-filter:blur(14px);padding:20px 14px;position:sticky;top:0;height:100vh}.brand{display:flex;align-items:center;gap:10px;padding:10px 12px 22px}.brandMark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#7b6bff,#339cff);font-size:20px;box-shadow:0 10px 30px rgba(75,100,255,.3)}.brand strong{font-size:24px}.brand small{color:var(--muted);display:block;font-size:11px}.nav{display:grid;gap:7px}.nav button{border:0;background:transparent;color:#bfd0e4;text-align:left;padding:12px 14px;border-radius:12px;cursor:pointer;display:flex;gap:10px;align-items:center;transition:.2s}.nav button:hover,.nav button.active{background:linear-gradient(90deg,rgba(93,87,255,.3),rgba(31,156,255,.13));color:#fff;transform:translateX(2px)}.sideCard{margin-top:auto;position:absolute;left:14px;right:14px;bottom:18px;background:linear-gradient(180deg,rgba(18,43,72,.95),rgba(9,24,42,.95));border:1px solid rgba(86,131,197,.3);border-radius:18px;padding:14px;color:#c8d8ea}.sideCard b{display:block;color:white;margin-bottom:4px}.main{padding:18px 22px 34px;max-width:1480px;width:100%;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:18px}.topbarLeft{display:flex;align-items:center;gap:15px}.tagline{color:var(--muted);font-size:14px}.modeSwitch{display:flex;gap:4px;background:#0c1b2e;border:1px solid #274264;padding:4px;border-radius:999px}.modeSwitch button{border:0;background:transparent;color:#bfd1e8;padding:10px 16px;border-radius:999px;cursor:pointer;font-weight:700}.modeSwitch button.active{background:linear-gradient(135deg,#6a58ff,#2a89ff);color:#fff;box-shadow:0 8px 22px rgba(71,91,255,.3)}.topActions{display:flex;gap:9px}.iconBtn{width:40px;height:40px;border-radius:12px;border:1px solid #28415f;background:#0b192b;color:#dce9f7;cursor:pointer}.workspace{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}.panel{border:1px solid #27476e;background:linear-gradient(180deg,rgba(10,27,47,.95),rgba(7,19,33,.95));border-radius:24px;box-shadow:var(--shadow);overflow:hidden}.panel.revision{border-color:rgba(87,112,255,.75)}.panel.chat{border-color:rgba(12,207,169,.72)}.panelHead{padding:22px 22px 16px;display:flex;gap:14px;align-items:center}.headIcon{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;font-size:23px;background:linear-gradient(135deg,#5b4cff,#2d8fff)}.chat .headIcon{background:linear-gradient(135deg,#05bd92,#11ddb0)}.panelHead h2{margin:0 0 4px;font-size:23px}.panelHead p{margin:0;color:var(--muted);font-size:13px}.panelBody{padding:0 20px 20px}.drop{border:1.5px dashed #5878ec;border-radius:18px;padding:28px 16px;text-align:center;background:linear-gradient(180deg,rgba(34,49,101,.18),rgba(10,25,43,.1));transition:.2s}.drop.drag{transform:scale(1.01);border-color:#8da4ff;background:rgba(56,79,158,.22)}.dropIcon{font-size:33px;margin-bottom:7px}.drop strong{display:block;font-size:16px}.drop small{color:var(--muted);display:block;margin-top:5px}.choose{display:inline-block;margin-top:14px;padding:11px 16px;border-radius:11px;background:linear-gradient(135deg,#6459ff,#2f8eff);color:#fff;font-weight:800;cursor:pointer}.choose input{display:none}.previewRow{display:flex;gap:9px;flex-wrap:wrap;margin-top:12px}.thumb{width:74px;height:74px;border-radius:12px;object-fit:cover;border:1px solid #2d4d72}.filePill{padding:9px 12px;border-radius:10px;background:#0c1e33;border:1px solid #25405e;color:#b9cbe0;font-size:12px}.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.actionCard{min-height:142px;text-align:left;background:linear-gradient(180deg,#0e2037,#0b1a2e);border:1px solid #29476a;color:#eaf3ff;border-radius:16px;padding:14px;cursor:pointer;transition:.22s;position:relative}.actionCard:hover{transform:translateY(-5px);border-color:#5d70c7;box-shadow:0 14px 35px rgba(18,54,100,.25)}.actionCard:disabled{opacity:.5;cursor:wait}.actionIcon{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(94,89,255,.2);margin-bottom:12px}.actionCard:nth-child(3) .actionIcon{background:rgba(0,205,157,.18)}.actionCard:nth-child(4) .actionIcon{background:rgba(242,129,74,.15)}.actionCard b{display:block;font-size:14px}.actionCard small{color:var(--muted);display:block;line-height:1.4;margin-top:5px}.arrow{position:absolute;right:10px;bottom:10px;width:27px;height:27px;border-radius:50%;background:#273477;display:grid;place-items:center}.activity{margin-top:15px;border:1px solid #203a59;background:#08182b;border-radius:15px;padding:13px}.activityTitle{color:#a7bfd9;font-size:12px;font-weight:700}.activityEmpty{color:#6f87a2;font-size:12px;margin-top:5px}.resultWrap{display:none;margin-top:18px}.resultWrap.show{display:block}.result{padding:20px;border-radius:18px;background:linear-gradient(180deg,#0b1d31,#081425);border:1px solid #29486b}.result h3{margin:0 0 12px}.resultContent{line-height:1.72;color:#dbe9f8}.resultContent h2,.resultContent h3{color:#fff}.resultContent li{margin:5px 0}.resultToolbar{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.ghost{background:#0f233b;color:#d7e6f7;border:1px solid #2b496b;border-radius:10px;padding:9px 12px;cursor:pointer}.chatArea{height:605px;display:flex;flex-direction:column}.messages{padding:0 4px;overflow:auto;flex:1;display:flex;flex-direction:column;gap:12px}.bubble{max-width:88%;padding:12px 14px;border-radius:16px;line-height:1.55;white-space:pre-wrap}.bubble.ai{align-self:flex-start;background:#102742;border:1px solid #28486a}.bubble.me{align-self:flex-end;background:linear-gradient(135deg,#2b4fc2,#315aef);border:1px solid #5273db}.chatComposer{margin-top:12px;display:flex;gap:9px;align-items:flex-end;border:1px solid #2a536c;background:#081b2c;padding:8px;border-radius:15px}.chatComposer textarea{flex:1;background:transparent;border:0;outline:0;color:#fff;resize:none;min-height:42px;max-height:120px;padding:8px}.send{width:44px;height:44px;border-radius:13px;border:0;background:linear-gradient(135deg,#12c89d,#25d6af);color:#06241f;font-weight:900;cursor:pointer}.send:disabled{opacity:.5;cursor:wait}.attach{width:38px;height:38px;border:0;background:transparent;color:#8fb0d3;cursor:pointer}.attach input{display:none}.chatHint{font-size:11px;color:#6e89a5;padding:0 4px}.sectionIntro{display:flex;justify-content:space-between;align-items:end;gap:15px;margin:28px 2px 12px}.sectionIntro h3{margin:0;font-size:18px}.sectionIntro p{margin:4px 0 0;color:var(--muted);font-size:12px}.featureGrid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:14px}.infoCard{border:1px solid #203b5c;background:#0a1a2d;border-radius:18px;padding:18px}.infoCard h4{margin:0 0 9px}.infoCard p{margin:0;color:#9bb0c8;line-height:1.55;font-size:13px}.checks{display:grid;gap:8px;margin-top:14px}.check{display:flex;gap:9px;color:#c7d8eb;font-size:13px}.check span{color:#3de3a4}.hidden{display:none!important}.spinner{width:28px;height:28px;border:3px solid #29445e;border-top-color:#70a0ff;border-radius:50%;animation:spin .8s linear infinite;margin:8px auto}@keyframes spin{to{transform:rotate(360deg)}}@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}.fade{animation:fade .25s ease}.quizBox{display:grid;gap:12px}.choice{border:1px solid #2b4662;background:#0c2036;color:#d9e7f6;border-radius:12px;text-align:left;padding:12px;cursor:pointer}.choice:hover{border-color:#5c7ce8}.choice.correct{border-color:#2bd59e;background:rgba(38,209,150,.1)}.choice.wrong{border-color:#ff5e68;background:rgba(255,71,88,.08)}.score{font-weight:800;color:#9fe7ca}.flashGrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}.flash{height:150px;perspective:900px;cursor:pointer}.flashInner{width:100%;height:100%;position:relative;transition:transform .5s;transform-style:preserve-3d}.flash.flip .flashInner{transform:rotateY(180deg)}.flashFace{position:absolute;inset:0;backface-visibility:hidden;border-radius:15px;padding:16px;display:flex;align-items:center;justify-content:center;text-align:center;border:1px solid #2a4567}.front{background:linear-gradient(180deg,#1a2348,#111a37);font-weight:800}.back{background:linear-gradient(180deg,#0d3b37,#0e2d2b);transform:rotateY(180deg);color:#c9f7eb}.emptyState{padding:28px;text-align:center;color:#8aa1ba}.footer{text-align:center;color:#58708b;font-size:12px;margin:26px 0 4px}
+@media(max-width:1050px){.workspace{grid-template-columns:1fr}.chatArea{height:520px}.featureGrid{grid-template-columns:1fr 1fr}.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){.app{grid-template-columns:1fr}.sidebar{position:static;height:auto;padding:10px}.brand{padding-bottom:8px}.sideCard{display:none}.nav{display:none}.main{padding:12px}.topbar{flex-direction:column;align-items:stretch}.topbarLeft{justify-content:space-between}.tagline{display:none}.modeSwitch{justify-content:center}.cards{grid-template-columns:1fr}.featureGrid{grid-template-columns:1fr}.panel{border-radius:18px}.chatArea{height:460px}}
 </style>
 </head>
 <body>
-<header><span>OEA</span> ✨</header>
-<main>
-<section class="hero"><h1>Ton cours devient <span>un outil de révision</span></h1><p>Avec <b>OEA</b>, prends tes feuilles en photo et l'IA crée ton cours, ton quiz ou tes flashcards.</p></section>
-<section class="upload" id="drop"><div class="icon">📸</div><h2>Envoie ton cours</h2><p>Glisse tes photos ici ou sélectionne plusieurs pages.</p><label class="choose">📁 Choisir mes photos<input id="files" type="file" accept="image/*" multiple></label><div class="files" id="filesList"></div></section>
-<section class="actions">
-<button class="action" onclick="generate('course')">🧠<b>Faire un cours</b><small>Résumé intelligent par IA</small></button>
-<button class="action" onclick="generate('quiz')">🎯<b>Faire des questions</b><small>20 questions personnalisées</small></button>
-<button class="action" onclick="generate('cards')">🃏<b>Faire des flashcards</b><small>15 cartes de mémorisation</small></button>
-</section>
-<section class="out" id="out"></section>
-</main>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brandMark">✦</div><div><strong>OEA</strong><small>assistant de révision avec IA</small></div></div>
+    <div class="nav">
+      <button class="active" onclick="focusMode('revision',this)">⌂ <span>Accueil</span></button>
+      <button onclick="scrollToSection('result')">◷ <span>Historique</span></button>
+      <button onclick="focusMode('chat',this)">◌ <span>Discussion</span></button>
+    </div>
+    <div class="sideCard"><b>💡 OEA</b><span>Apprends plus vite, plus simplement.</span></div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="topbarLeft"><div class="tagline">Ton assistant de révision avec IA</div></div>
+      <div class="modeSwitch" role="tablist" aria-label="Modes OEA">
+        <button id="revisionTab" class="active" onclick="switchMode('revision')">📖 IA Révision</button>
+        <button id="chatTab" onclick="switchMode('chat')">💬 IA Questions</button>
+      </div>
+      <div class="topActions"><button class="iconBtn" onclick="document.body.classList.toggle('dim')" title="Ambiance">☾</button><button class="iconBtn" title="Profil">◯</button></div>
+    </div>
+
+    <div class="workspace">
+      <section class="panel revision" id="revisionPanel">
+        <div class="panelHead"><div class="headIcon">📖</div><div><h2>IA Révision</h2><p>Analyse tes documents et crée des outils pour t'aider à réviser.</p></div></div>
+        <div class="panelBody">
+          <div class="drop" id="dropZone">
+            <div class="dropIcon">🖼️</div>
+            <strong>Ajoute tes photos de cours</strong>
+            <small>Glisse-dépose tes images ici ou clique pour sélectionner<br>JPG, PNG, WEBP · jusqu'à 8 images</small>
+            <label class="choose">📁 Choisir mes photos<input id="fileInput" type="file" accept="image/*" multiple></label>
+          </div>
+          <div class="previewRow" id="previewRow"></div>
+          <div class="cards">
+            <button class="actionCard" onclick="generate('course')"><div class="actionIcon">📄</div><b>Fiche de révision</b><small>Résumé clair et complet de ton cours</small><span class="arrow">→</span></button>
+            <button class="actionCard" onclick="generate('quiz')"><div class="actionIcon">❔</div><b>20 questions</b><small>QCM avec corrections et explications</small><span class="arrow">→</span></button>
+            <button class="actionCard" onclick="generate('cards')"><div class="actionIcon">🗂️</div><b>Flashcards</b><small>15 cartes pour mémoriser l'essentiel</small><span class="arrow">→</span></button>
+            <button class="actionCard" onclick="resetAll()"><div class="actionIcon">↻</div><b>Recommencer</b><small>Efface tout et repars de zéro</small><span class="arrow">→</span></button>
+          </div>
+          <div class="activity"><div class="activityTitle">◷ Dernière activité</div><div class="activityEmpty" id="activity">Aucune activité pour le moment</div></div>
+          <div class="resultWrap" id="result"><div class="result" id="resultBox"></div></div>
+        </div>
+      </section>
+
+      <section class="panel chat" id="chatPanel">
+        <div class="panelHead"><div class="headIcon">💬</div><div><h2>IA Questions</h2><p>Pose tes questions et obtiens des réponses claires et personnalisées.</p></div></div>
+        <div class="panelBody chatArea">
+          <div class="messages" id="messages">
+            <div class="bubble ai fade">Bonjour ! 👋<br><br>Je suis ton assistant IA. Pose-moi une question sur ton cours, demande-moi d'expliquer une notion ou aide-toi à comprendre un point difficile.<br><br>Tu peux aussi envoyer des photos dans <b>IA Révision</b> : je pourrai m'appuyer dessus pour répondre.</div>
+          </div>
+          <div class="chatHint" id="chatHint">Conseil : envoie tes photos dans IA Révision pour que mes réponses s'appuient sur ton cours.</div>
+          <div class="chatComposer">
+            <label class="attach" title="Ajouter une image">🖼️<input id="chatImageInput" type="file" accept="image/*" multiple></label>
+            <textarea id="chatInput" placeholder="Écris ta question ici…" rows="1"></textarea>
+            <button class="send" id="sendBtn" onclick="sendChat()">➤</button>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="sectionIntro"><div><h3>Analyse et logique du projet</h3><p>Une seule appli, deux modes qui travaillent ensemble.</p></div></div>
+    <div class="featureGrid">
+      <div class="infoCard"><h4>✨ Objectif OEA</h4><p>Créer un espace simple où tu peux transformer tes photos de cours en outils de révision, puis discuter avec une IA à propos de ce que tu apprends.</p><div class="checks"><div class="check"><span>✓</span> Interface simple et intuitive</div><div class="check"><span>✓</span> Deux modes distincts</div><div class="check"><span>✓</span> Photos de cours comme contexte</div><div class="check"><span>✓</span> Explications simples et claires</div></div></div>
+      <div class="infoCard"><h4>📖 IA Révision</h4><p>Analyse les pages de cours puis produit une fiche, exactement 20 questions ou 15 flashcards.</p><div class="checks"><div class="check"><span>✓</span> Fiche de révision</div><div class="check"><span>✓</span> Quiz de 20 questions</div><div class="check"><span>✓</span> Flashcards</div></div></div>
+      <div class="infoCard"><h4>💬 IA Questions</h4><p>Une zone de discussion pour demander une explication, vérifier une compréhension ou approfondir un point.</p><div class="checks"><div class="check"><span>✓</span> Conversation libre</div><div class="check"><span>✓</span> Contexte du cours possible</div><div class="check"><span>✓</span> Historique de la conversation</div></div></div>
+    </div>
+    <div class="footer">OEA — la puissance de l'IA au service de ta réussite ✦</div>
+  </main>
+</div>
 <script>
-let files=[],quiz=[],qi=0,score=0;
-const $=id=>document.getElementById(id),drop=$("drop");
-$("files").onchange=e=>add([...e.target.files]);
-function add(x){files.push(...x.filter(f=>f.type.startsWith('image/')));$("filesList").innerHTML=files.map(f=>`<div class=file>📄 ${esc(f.name)}</div>`).join("")}
-["dragenter","dragover"].forEach(e=>drop.addEventListener(e,x=>{x.preventDefault();drop.classList.add("drag")}));
-["dragleave","drop"].forEach(e=>drop.addEventListener(e,x=>{x.preventDefault();drop.classList.remove("drag")}));
-drop.ondrop=e=>add([...e.dataTransfer.files]);
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
-function md(s){return esc(s).replace(/^### (.*)$/gm,'<h3>$1</h3>').replace(/^## (.*)$/gm,'<h2>$1</h2>').replace(/^# (.*)$/gm,'<h2>$1</h2>').replace(/^[-•] (.*)$/gm,'<li>$1</li>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>')}
-async function imageData(file){return new Promise((resolve,reject)=>{const img=new Image(),r=new FileReader();r.onload=()=>{img.onload=()=>{const max=1600;let w=img.width,h=img.height;if(Math.max(w,h)>max){const k=max/Math.max(w,h);w=Math.round(w*k);h=Math.round(h*k)}const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',.78))};img.onerror=reject;img.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
+const state={files:[], images:[], mode:'revision', quiz:[], qIndex:0, score:0, messages:[]};
+const $=id=>document.getElementById(id);
+const drop=$('dropZone'); const fileInput=$('fileInput');
+fileInput.addEventListener('change',e=>addFiles([...e.target.files]));
+['dragenter','dragover'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('drag')}));
+['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('drag')}));
+drop.addEventListener('drop',e=>addFiles([...e.dataTransfer.files]));
+function addFiles(fs){const imgs=fs.filter(f=>f.type.startsWith('image/'));state.files=[...state.files,...imgs].slice(0,8); renderFiles(); $('activity').textContent=state.files.length+' photo(s) prêtes pour l\'IA';}
+function renderFiles(){const row=$('previewRow');row.innerHTML='';state.files.forEach(f=>{const img=document.createElement('img');img.className='thumb';img.alt=f.name;img.title=f.name;img.src=URL.createObjectURL(f);row.appendChild(img)}); if(state.files.length) row.insertAdjacentHTML('beforeend',`<div class="filePill">${state.files.length}/8 pages</div>`)}
+async function imageData(file){return new Promise((resolve,reject)=>{const img=new Image(),r=new FileReader();r.onload=()=>{img.onload=()=>{const max=1400;let w=img.width,h=img.height;const k=Math.min(1,max/Math.max(w,h));w=Math.max(1,Math.round(w*k));h=Math.max(1,Math.round(h*k));const c=document.createElement('canvas');c.width=w;c.height=h;const ctx=c.getContext('2d');ctx.drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',.76))};img.onerror=reject;img.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+function md(s){let t=esc(s);t=t.replace(/^### (.*)$/gm,'<h3>$1</h3>').replace(/^## (.*)$/gm,'<h2>$1</h2>').replace(/^# (.*)$/gm,'<h2>$1</h2>').replace(/^[-•] (.*)$/gm,'<li>$1</li>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');return t}
+function switchMode(mode){state.mode=mode;$('revisionTab').classList.toggle('active',mode==='revision');$('chatTab').classList.toggle('active',mode==='chat');if(mode==='chat'){$('chatInput').focus();} }
+function focusMode(mode,btn){document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');switchMode(mode);document.getElementById(mode==='chat'?'chatPanel':'revisionPanel').scrollIntoView({behavior:'smooth',block:'start'})}
+function scrollToSection(id){document.getElementById(id).scrollIntoView({behavior:'smooth',block:'center'})}
 async function generate(action){
- const out=$("out");out.className="out show";
- if(!files.length){out.innerHTML='<div class=error>📸 Ajoute d’abord au moins une photo de ton cours.</div>';return}
- document.querySelectorAll('.action').forEach(b=>b.disabled=true);
- out.innerHTML='<div class=spinner></div><p style="text-align:center">🤖 L’IA lit tes pages et prépare ta révision…</p>';
- try{const images=[];for(const f of files.slice(0,8)) images.push(await imageData(f));
-   const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,images})});
+ const result=$('result'),box=$('resultBox'); result.classList.add('show'); box.innerHTML='<div class="spinner"></div><div style="text-align:center;color:#9ab0c8">🤖 L\'IA analyse tes pages…</div>';
+ if(!state.files.length){box.innerHTML='<div class="emptyState">📷 Ajoute d\'abord au moins une photo de ton cours.</div>';return}
+ document.querySelectorAll('.actionCard').forEach(b=>b.disabled=true);
+ try{state.images=[];for(const f of state.files)state.images.push(await imageData(f));
+   const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,images:state.images})});
    const data=await r.json();if(!r.ok)throw new Error(data.error||'Erreur serveur');
-   if(action==='course') showCourse(data.text); else if(action==='cards') showCards(data.text); else showQuiz(data.text);
- }catch(e){out.innerHTML=`<div class=error>❌ ${esc(e.message)}<br><br>Vérifie que le site est déployé avec le serveur IA et que la clé API est bien configurée.</div>`}
- finally{document.querySelectorAll('.action').forEach(b=>b.disabled=false)}
+   $('activity').textContent=action==='course'?'Fiche de révision générée':action==='quiz'?'Quiz de 20 questions généré':'15 flashcards générées';
+   if(action==='course')showCourse(data.text);else if(action==='quiz')showQuiz(data.text);else showCards(data.text);
+   scrollToSection('result');
+ }catch(e){box.innerHTML=`<div class="emptyState" style="color:#ff969d">❌ ${esc(e.message)}</div>`} finally{document.querySelectorAll('.actionCard').forEach(b=>b.disabled=false)}
 }
-function safeJSON(raw){
-  try{return JSON.parse(raw)}catch(e){
-    const cleaned=String(raw).replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'').trim();
-    try{return JSON.parse(cleaned)}catch(e2){throw new Error('L’IA a renvoyé une réponse invalide. Réessaie avec des photos plus nettes.')}
-  }
-}
-function showCourse(text){$("out").innerHTML=`<div class=topline><h2>🧠 Ton cours créé par l’IA</h2><button class=restart onclick="location.reload()">🔄 Recommencer</button></div><div class="markdown">${md(text)}</div>`}
-function showCards(raw){let d=safeJSON(raw),c=d.cards||[];$("out").innerHTML=`<div class=topline><div><h2>🃏 Tes flashcards IA</h2><p>Clique sur une carte pour la retourner.</p></div><button class=restart onclick="location.reload()">🔄 Recommencer</button></div><div class=flashgrid>${c.map((x,i)=>`<div class=flash onclick="this.classList.toggle('flip')"><div class=inner><div class="face front">${esc(x.question||('Carte '+(i+1)))}</div><div class="face back">${esc(x.answer||'')}</div></div></div>`).join('')}</div>`}
-function showQuiz(raw){let d=safeJSON(raw);quiz=d.questions||[];qi=0;score=0;showQ()}
-function showQ(){if(qi>=quiz.length){$("out").innerHTML=`<div class=topline><h2>🎉 Quiz terminé</h2><button class=restart onclick="location.reload()">🔄 Nouveau</button></div><h3>Score : ${score} / ${quiz.length}</h3><p>Tu peux refaire le quiz pour t’entraîner.</p><button class=next onclick="qi=0;score=0;showQ()">🔄 Refaire le quiz</button>`;return}let x=quiz[qi];$("out").innerHTML=`<div class=topline><h2>🎯 Question ${qi+1} / ${quiz.length}</h2><span class=status>Score : ${score}</span></div><div style="font-size:22px;font-weight:bold;margin:25px 0">${esc(x.question)}</div><div class=answers>${x.choices.map((v,i)=>`<button class=ans onclick="answer(this,${i})">${esc(v)}</button>`).join('')}</div><div class=feedback id=fb></div><button class=next id=nxt disabled onclick="qi++;showQ()">Question suivante ➜</button>`}
-function answer(b,i){document.querySelectorAll('.ans').forEach(x=>x.disabled=true);const x=quiz[qi],ok=i===x.answer;if(ok){score++;b.style.borderColor='#16a34a';$("fb").textContent='✅ Correct ! '+(x.explanation||'')}else{b.style.borderColor='#dc2626';$("fb").textContent='❌ Mauvaise réponse. '+(x.explanation||'')}$("nxt").disabled=false}
+function safeJSON(raw){let s=String(raw||'').trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/\s*```$/,'').trim();try{return JSON.parse(s)}catch{const a=s.indexOf('{'),b=s.lastIndexOf('}');if(a>=0&&b>a)try{return JSON.parse(s.slice(a,b+1))}catch{}throw new Error('Réponse IA invalide. Réessaie avec des photos plus nettes.')}}
+function resultHeader(title,sub=''){return `<div class="resultToolbar"><div><h3>${title}</h3>${sub?`<div style="color:#8097b1;font-size:12px">${sub}</div>`:''}</div><button class="ghost" onclick="resetResult()">↻ Recommencer</button></div>`}
+function showCourse(text){$('resultBox').innerHTML=resultHeader('📄 Ta fiche de révision IA','Basée uniquement sur les photos envoyées')+`<div class="resultContent">${md(text)}</div>`}
+function showCards(raw){const d=safeJSON(raw),cards=d.cards||[];$('resultBox').innerHTML=resultHeader('🗂️ Tes flashcards','Clique sur une carte pour la retourner')+`<div class="flashGrid">${cards.map((c,i)=>`<div class="flash" onclick="this.classList.toggle('flip')"><div class="flashInner"><div class="flashFace front">${esc(c.question||('Carte '+(i+1)))}</div><div class="flashFace back">${esc(c.answer||'')}</div></div></div>`).join('')}</div>`}
+function showQuiz(raw){const d=safeJSON(raw);state.quiz=d.questions||[];state.qIndex=0;state.score=0;renderQuestion()}
+function renderQuestion(){const box=$('resultBox');if(state.qIndex>=state.quiz.length){box.innerHTML=resultHeader('🎉 Quiz terminé')+`<div class="score">Score : ${state.score} / ${state.quiz.length}</div><p style="color:#a4b8ce">Refais le quiz pour t\'entraîner encore.</p><button class="ghost" onclick="state.qIndex=0;state.score=0;renderQuestion()">↻ Refaire le quiz</button>`;return}const q=state.quiz[state.qIndex];box.innerHTML=resultHeader(`❔ Question ${state.qIndex+1} / ${state.quiz.length}`)+`<div class="quizBox"><div style="font-size:19px;font-weight:800">${esc(q.question)}</div><div id="choices">${(q.choices||[]).map((c,i)=>`<button class="choice" onclick="answerQuestion(${i})">${String.fromCharCode(65+i)}. ${esc(c)}</button>`).join('')}</div><div id="feedback" style="min-height:34px;color:#bcd0e5"></div></div>`}
+function answerQuestion(i){const q=state.quiz[state.qIndex],btns=[...document.querySelectorAll('.choice')];btns.forEach(b=>b.disabled=true);if(i===q.answer){state.score++;btns[i]?.classList.add('correct');$('feedback').innerHTML='✅ Correct ! '+esc(q.explanation||'')}else{btns[i]?.classList.add('wrong');btns[q.answer]?.classList.add('correct');$('feedback').innerHTML='❌ '+esc(q.explanation||'')}$('feedback').insertAdjacentHTML('beforeend','<br><button class="ghost" style="margin-top:8px" onclick="state.qIndex++;renderQuestion()">Question suivante →</button>')}
+function resetResult(){$('result').classList.remove('show');$('resultBox').innerHTML=''}
+function resetAll(){state.files=[];state.images=[];state.quiz=[];state.messages=[];$('previewRow').innerHTML='';$('fileInput').value='';$('activity').textContent='Aucune activité pour le moment';resetResult();$('messages').innerHTML='<div class="bubble ai fade">Tout est effacé ✨<br><br>Tu peux recommencer avec de nouvelles pages de cours.</div>'}
+$('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
+async function sendChat(){const input=$('chatInput'),text=input.value.trim();if(!text)return;addBubble('me',text);input.value='';$('sendBtn').disabled=true;const loading=document.createElement('div');loading.className='bubble ai fade';loading.id='chatLoading';loading.innerHTML='<div class="spinner"></div>';$('messages').appendChild(loading);$('messages').scrollTop=$('messages').scrollHeight;try{
+ let images=state.images;if(!images.length && state.files.length){images=[];for(const f of state.files)images.push(await imageData(f));state.images=images}
+ state.messages.push({role:'user',text});const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'chat',messages:state.messages.slice(-12),images})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Erreur serveur');loading.remove();addBubble('ai',data.text||'Je n\'ai pas reçu de réponse.');state.messages.push({role:'assistant',text:data.text||''});
+ }catch(e){loading.remove();addBubble('ai','❌ '+e.message)}finally{$('sendBtn').disabled=false;input.focus()}}
+function addBubble(who,text){const b=document.createElement('div');b.className='bubble '+(who==='me'?'me':'ai')+' fade';b.innerHTML=who==='ai'?md(text):esc(text);$('messages').appendChild(b);$('messages').scrollTop=$('messages').scrollHeight}
+$('chatImageInput').addEventListener('change',async e=>{const fs=[...e.target.files].filter(f=>f.type.startsWith('image/'));if(!fs.length)return;state.files=[...state.files,...fs].slice(0,8);renderFiles();state.images=[];for(const f of state.files)state.images.push(await imageData(f));$('chatHint').textContent=state.files.length+' page(s) de cours disponibles comme contexte pour IA Questions.';switchMode('chat');});
 </script>
-</body></html>
+</body>
+</html>
