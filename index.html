@@ -7,88 +7,6 @@
 <meta name="description" content="OEA transforme tes cours en révisions et répond à tes questions avec l'IA.">
 <meta name="theme-color" content="#07111f">
 <style>
-
-    /* ===== Thème clair / sombre ===== */
-    :root {
-      --bg: #07111f;
-      --panel: rgba(10, 24, 43, .78);
-      --panel-2: rgba(18, 37, 64, .8);
-      --text: #f5f7fb;
-      --muted: #aab8cc;
-      --border: rgba(255,255,255,.1);
-      --input: rgba(255,255,255,.06);
-      --shadow: 0 18px 55px rgba(0,0,0,.28);
-      --accent: #8b5cf6;
-      --accent-2: #22d3ee;
-    }
-
-    html.light {
-      --bg: #f4f7fb;
-      --panel: rgba(255,255,255,.88);
-      --panel-2: rgba(248,250,252,.94);
-      --text: #172033;
-      --muted: #5f6b7a;
-      --border: rgba(15,23,42,.10);
-      --input: rgba(15,23,42,.05);
-      --shadow: 0 18px 45px rgba(15,23,42,.10);
-      --accent: #7c3aed;
-      --accent-2: #0891b2;
-    }
-
-    body {
-      background: var(--bg) !important;
-      color: var(--text) !important;
-    }
-
-    .theme-toggle {
-      border: 1px solid var(--border);
-      background: var(--panel);
-      color: var(--text);
-      border-radius: 14px;
-      width: 46px;
-      height: 46px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 20px;
-      transition: transform .2s ease, background .2s ease, border-color .2s ease;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
-    }
-
-    .theme-toggle:hover {
-      transform: translateY(-2px);
-    }
-
-    /* Force common surfaces to follow the selected theme */
-    .card, .panel, .chat-panel, .revision-panel, .hero, .upload-box,
-    .modal, .toolbar, .flashcard, .question-card {
-      background: var(--panel) !important;
-      color: var(--text) !important;
-      border-color: var(--border) !important;
-      box-shadow: var(--shadow);
-    }
-
-    input, textarea, select {
-      background: var(--input) !important;
-      color: var(--text) !important;
-      border-color: var(--border) !important;
-    }
-
-    input::placeholder, textarea::placeholder {
-      color: var(--muted) !important;
-    }
-
-    .muted, .subtitle, .description, small {
-      color: var(--muted) !important;
-    }
-
-    html.light .glow,
-    html.light .background-glow {
-      opacity: .18 !important;
-    }
-
 :root{--bg:#06101c;--panel:#0b1828;--panel2:#0f2033;--line:#29435f;--text:#f3f7ff;--muted:#91a7c0;--blue:#6b5cff;--blue2:#2e91ff;--mint:#18d2a0;--mint2:#0eb98d;--danger:#ff6673;--shadow:0 28px 80px rgba(0,0,0,.34)}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 12% 8%,rgba(91,83,255,.16),transparent 27%),radial-gradient(circle at 85% 22%,rgba(11,211,172,.11),transparent 24%),var(--bg);color:var(--text)}
 button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px;margin:auto;padding:22px 22px 34px}.header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}.brand{display:flex;align-items:center;gap:11px}.logo{width:46px;height:46px;border-radius:15px;display:grid;place-items:center;background:linear-gradient(135deg,#7f72ff,#2c91ff);font-size:22px;box-shadow:0 14px 35px rgba(72,93,255,.28)}.brandName{font-size:24px;font-weight:900;letter-spacing:.2px}.brandSub{font-size:11px;color:var(--muted);margin-top:2px}.modeNav{display:flex;gap:6px;padding:5px;border:1px solid #243b58;background:rgba(8,20,34,.82);border-radius:17px;backdrop-filter:blur(12px)}.modeBtn{border:0;background:transparent;color:#a9bdd4;padding:11px 18px;border-radius:12px;font-weight:800;cursor:pointer;transition:.2s}.modeBtn:hover{color:#fff;background:#11253c}.modeBtn.active.revision{color:#fff;background:linear-gradient(135deg,var(--blue),var(--blue2));box-shadow:0 10px 25px rgba(79,91,255,.25)}.modeBtn.active.chat{color:#05221c;background:linear-gradient(135deg,#1fe2b2,#10c49b);box-shadow:0 10px 25px rgba(19,211,168,.22)}.miniBtn{border:1px solid #2a4561;background:#0b1a2d;color:#dceaf8;border-radius:12px;padding:10px 13px;cursor:pointer}
@@ -100,33 +18,8 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
 @media(max-width:1000px){.uploadGrid{grid-template-columns:1fr}.chatView{grid-template-columns:1fr}.chatSide{display:none}.chatBox{height:calc(100vh - 170px);min-height:560px}.actions{grid-template-columns:1fr 1fr}}
 @media(max-width:680px){.shell{padding:12px}.header{align-items:flex-start;flex-wrap:wrap}.brandSub{display:none}.modeNav{width:100%;order:3}.modeBtn{flex:1;padding:11px 8px}.miniBtn{padding:9px 10px}.hero{padding:23px;border-radius:21px}.heroStats{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.hero h1{font-size:35px}.chatBox{min-height:560px}.bubble{max-width:92%}.resultInner,.boxPad{padding:17px}.drop{padding:28px 14px}}
 
-/* OEA V6 — seul le logo texte OEA change avec le thème */
-html.light body,
-html.light .card,
-html.light .panel,
-html.light .chat-panel,
-html.light .revision-panel,
-html.light .hero,
-html.light .upload-box,
-html.light .modal,
-html.light .toolbar,
-html.light .flashcard,
-html.light .question-card {
-  color: inherit !important;
-}
-
-/* On garde les couleurs du texte de l'interface comme dans le thème sombre.
-   Seul le mot OEA change de couleur. */
-html.light .brand-oea {
-  color: #2563eb !important;
-  -webkit-text-fill-color: #2563eb !important;
-}
-
-html:not(.light) .brand-oea {
-  color: #ffffff !important;
-  -webkit-text-fill-color: #ffffff !important;
-}
-
+.oea-logo-only{transition:color .2s ease}
+html.light .oea-logo-only{color:#2563eb!important}
 </style>
 </head>
 <body>
@@ -134,15 +27,12 @@ html:not(.light) .brand-oea {
   <header class="header">
     <div class="brand">
       <div class="logo">✦</div>
-      <div><div class="brandName"><span class="brand-oea">OEA</span></div><div class="brandSub">Ton assistant d'apprentissage</div></div>
+      <div><div class="brandName"><span class="oea-logo-only">OEA</span><button id="oeaLogoThemeToggle" type="button" title="Changer la couleur de OEA" aria-label="Changer la couleur de OEA" style="border:0;background:transparent;color:inherit;cursor:pointer;font-size:16px;margin-left:8px">☀️</button></div><div class="brandSub">Ton assistant d'apprentissage</div></div>
     </div>
     <nav class="modeNav" aria-label="Choix du mode">
       <button class="modeBtn revision active" id="revisionTab" onclick="switchMode('revision')">📖 IA Révision</button>
       <button class="modeBtn chat" id="chatTab" onclick="switchMode('chat')">💬 IA Questions</button>
-    
-<button class="theme-toggle" id="themeToggle" type="button" aria-label="Changer de thème" title="Mode clair / sombre">☀️</button>
-
-</nav>
+    </nav>
     <button class="miniBtn" onclick="resetAll()">↻ Nouvelle session</button>
   </header>
 
@@ -259,33 +149,21 @@ function resetAll(){state.files=[];state.images=[];state.quiz=[];state.qIndex=0;
 </script>
 
 <script>
-(function () {
-  const root = document.documentElement;
-  const toggle = document.getElementById("themeToggle");
-
-  function applyTheme(theme) {
-    const light = theme === "light";
-    root.classList.toggle("light", light);
-    if (toggle) {
-      toggle.textContent = light ? "🌙" : "☀️";
-      toggle.title = light ? "Passer en mode sombre" : "Passer en mode clair";
-      toggle.setAttribute("aria-label", light ? "Passer en mode sombre" : "Passer en mode clair");
-    }
-  }
-
-  let saved = localStorage.getItem("oea-theme");
-  if (!saved) {
-    saved = window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
-  }
-  applyTheme(saved);
-
-  if (toggle) {
-    toggle.addEventListener("click", function () {
-      const next = root.classList.contains("light") ? "dark" : "light";
-      localStorage.setItem("oea-theme", next);
-      applyTheme(next);
-    });
-  }
+(() => {
+  const logo = document.querySelector('.oea-logo-only');
+  const btn = document.getElementById('oeaLogoThemeToggle');
+  if (!logo || !btn) return;
+  const apply = light => {
+    document.documentElement.classList.toggle('light', light);
+    btn.textContent = light ? '🌙' : '☀️';
+  };
+  const saved = localStorage.getItem('oea-logo-theme') === 'light';
+  apply(saved);
+  btn.addEventListener('click', () => {
+    const light = !document.documentElement.classList.contains('light');
+    localStorage.setItem('oea-logo-theme', light ? 'light' : 'dark');
+    apply(light);
+  });
 })();
 </script>
 
