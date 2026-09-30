@@ -67,6 +67,66 @@ export default async function handler(req, res) {
     const { action, images = [], messages = [] } = req.body || {};
     if (!action) return json(res, 400, { error: "Action manquante." });
 
+
+    if (action === "image") {
+      const prompt = typeof imagePrompt === "string" ? imagePrompt.trim() : "";
+
+      if (!prompt) {
+        return json(res, 400, {
+          error: "Écris une description pour l'image."
+        });
+      }
+
+      const imageResponse = await fetch(
+        "https://generativelanguage.googleapis.com/v1beta/interactions",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-goog-api-key": process.env.GEMINI_API_KEY
+          },
+          body: JSON.stringify({
+            model: "gemini-3.1-flash-image",
+            input: [
+              {
+                type: "text",
+                text: prompt
+              }
+            ]
+          })
+        }
+      );
+
+      const imageData = await imageResponse.json();
+
+      if (!imageResponse.ok) {
+        console.error("OEA IMAGE ERROR:", imageData);
+        const msg =
+          imageData?.error?.message ||
+          "Impossible de générer l'image.";
+        const err = new Error(msg);
+        err.status = imageResponse.status;
+        throw err;
+      }
+
+      const generatedImage =
+        imageData?.output_image?.data ||
+        imageData?.interaction?.output_image?.data ||
+        imageData?.output?.find?.(item => item?.type === "image")?.data;
+
+      if (!generatedImage) {
+        console.error("Réponse image inattendue:", imageData);
+        return json(res, 500, {
+          error: "Gemini n'a pas renvoyé d'image."
+        });
+      }
+
+      return json(res, 200, {
+        text: "Image créée par OEA.",
+        image: `data:image/png;base64,${generatedImage}`
+      });
+    }
+
     if (["course", "quiz", "cards"].includes(action)) {
       if (!Array.isArray(images) || !images.length) return json(res, 400, { error: "Ajoute au moins une photo de cours." });
       const parts = [{ text: buildRevisionPrompt(action) }];
