@@ -18,8 +18,239 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
 @media(max-width:1000px){.uploadGrid{grid-template-columns:1fr}.chatView{grid-template-columns:1fr}.chatSide{display:none}.chatBox{height:calc(100vh - 170px);min-height:560px}.actions{grid-template-columns:1fr 1fr}}
 @media(max-width:680px){.shell{padding:12px}.header{align-items:flex-start;flex-wrap:wrap}.brandSub{display:none}.modeNav{width:100%;order:3}.modeBtn{flex:1;padding:11px 8px}.miniBtn{padding:9px 10px}.hero{padding:23px;border-radius:21px}.heroStats{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.hero h1{font-size:35px}.chatBox{min-height:560px}.bubble{max-width:92%}.resultInner,.boxPad{padding:17px}.drop{padding:28px 14px}}
 
-.oea-logo-only{transition:color .2s ease}
-html.light .oea-logo-only{color:#2563eb!important}
+/* Photo choisie par l'utilisateur pour le bouton IA Questions */
+.modeBtn.chat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.chatNavImage {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: 0 0 28px;
+}
+
+/* ===== OEA V8 — interface IA Questions type assistant + historique ===== */
+.chatGPTLayout{
+  display:grid;
+  grid-template-columns:255px minmax(0,1fr);
+  gap:16px;
+  min-height:calc(100vh - 155px);
+}
+.historySidebar{
+  min-height:680px;
+  display:flex;
+  flex-direction:column;
+  padding:13px;
+  position:relative;
+}
+.historyTop{margin-bottom:12px}
+.newChatBtn{
+  width:100%;
+  border:1px solid #2d4c69;
+  background:#0d2238;
+  color:#eef6ff;
+  border-radius:12px;
+  padding:11px 13px;
+  cursor:pointer;
+  font-weight:800;
+  text-align:left;
+}
+.newChatBtn:hover{background:#112a44}
+.historyTitle{
+  color:#7690a9;
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  padding:5px 8px 8px;
+}
+.historyList{
+  flex:1;
+  overflow:auto;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+  min-height:0;
+}
+.historyItem{
+  width:100%;
+  border:1px solid transparent;
+  background:transparent;
+  color:#cbd9e8;
+  border-radius:10px;
+  padding:10px;
+  cursor:pointer;
+  text-align:left;
+  font-size:12px;
+  line-height:1.4;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.historyItem:hover{background:#0d2238}
+.historyItem.active{background:#102b45;border-color:#244b6d;color:#fff}
+.historyEmpty{
+  color:#667f98;
+  font-size:12px;
+  padding:10px;
+  line-height:1.5;
+}
+.historyBottom{
+  border-top:1px solid #203b55;
+  padding-top:11px;
+  margin-top:10px;
+}
+.profileMini{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:8px;
+}
+.profileAvatar{
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  object-fit:cover;
+  border:1px solid #31516f;
+}
+.profileMini strong{display:block;font-size:12px;color:#eff6ff}
+.profileMini span{display:block;color:#6f88a1;font-size:10px;margin-top:2px}
+.clearHistoryBtn{
+  width:100%;
+  margin-top:5px;
+  border:0;
+  background:transparent;
+  color:#728ba4;
+  border-radius:9px;
+  padding:8px;
+  cursor:pointer;
+  text-align:left;
+  font-size:11px;
+}
+.clearHistoryBtn:hover{background:#0c2035;color:#ff9da6}
+.chatMain{
+  min-width:0;
+  min-height:680px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+.chatTopBar{
+  padding:17px 21px;
+  border-bottom:1px solid #203d59;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.chatTopTitle{display:flex;align-items:center;gap:11px}
+.chatTopIcon{
+  width:39px;height:39px;border-radius:12px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#6b5cff,#2e91ff);font-weight:950;color:#fff;
+}
+.chatTopBar h2{margin:0;font-size:18px}
+.chatTopBar p{margin:3px 0 0;color:#718ba4;font-size:11px}
+.chatMain .messages{
+  flex:1;
+  min-height:430px;
+  max-height:none;
+  overflow:auto;
+  padding:28px clamp(18px,4vw,80px);
+}
+.welcomeChat{
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  text-align:center;
+  color:#aabbd0;
+  padding:60px 20px;
+}
+.welcomeIcon{
+  width:58px;height:58px;border-radius:18px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#6b5cff,#2e91ff);color:#fff;font-size:24px;
+  box-shadow:0 15px 32px rgba(65,85,255,.25);
+}
+.welcomeChat h2{margin:18px 0 8px;color:#eef5ff;font-size:25px}
+.welcomeChat p{max-width:540px;line-height:1.6;margin:0;color:#7f96ad;font-size:13px}
+.suggestions{
+  display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:20px
+}
+.suggestion{
+  border:1px solid #2a4965;background:#0b1f34;color:#cfe0ef;border-radius:12px;
+  padding:10px 12px;cursor:pointer;font-size:12px
+}
+.suggestion:hover{background:#102943;border-color:#496788}
+.composerArea{
+  padding:13px clamp(14px,4vw,80px) 15px;
+  border-top:1px solid #203d59;
+}
+.composer{
+  display:flex;gap:6px;align-items:flex-end;
+  border:1px solid #2d506e;background:#081a2b;border-radius:18px;padding:7px;
+  box-shadow:0 8px 28px rgba(0,0,0,.18);
+}
+.composer textarea{
+  flex:1;min-height:42px;max-height:160px;resize:none;outline:0;border:0;
+  background:transparent;color:#eef6ff;padding:11px 8px;line-height:1.45
+}
+.composerIcon{
+  position:relative;width:42px;height:42px;border:0;border-radius:12px;
+  background:transparent;color:#88a4be;cursor:pointer;display:grid;place-items:center;
+  font-size:17px;flex:0 0 42px;
+}
+.composerIcon:hover{background:#102943;color:#dceaf7}
+.composerIcon input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.composerIcon.active{
+  background:rgba(107,92,255,.18);color:#bdb7ff;border:1px solid rgba(107,92,255,.45)
+}
+.composer .send{
+  flex:0 0 44px;width:44px;height:44px
+}
+.composerHint{font-size:10px;color:#627d97;padding:7px 3px 0}
+.attachedPreview{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:7px}
+.attachedPreview:empty{display:none}
+.chatAttachmentThumb{
+  width:42px;height:42px;border-radius:10px;object-fit:cover;border:1px solid #2d4e6b
+}
+.imageBubble{
+  max-width:min(680px,85%);
+  border:1px solid #2e4f6c;background:#0b1f33;border-radius:18px;padding:8px;
+}
+.imageBubble img{display:block;max-width:100%;border-radius:12px}
+.imageCaption{padding:7px 5px 2px;color:#8299b0;font-size:10px}
+.imageActions{display:flex;gap:7px;padding:7px 5px 2px}
+.imageAction{
+  border:1px solid #2c4c68;background:#0d2238;color:#cfe1ef;
+  border-radius:9px;padding:7px 9px;cursor:pointer;font-size:11px
+}
+.modeImage .composer{
+  border-color:#5c54bd;
+  box-shadow:0 0 0 1px rgba(107,92,255,.13),0 10px 35px rgba(65,68,170,.18)
+}
+.modeImage .composerHint{color:#aaa1ff}
+
+/* Keep the existing navigation layout while making chat feel full-width. */
+@media(max-width:900px){
+  .chatGPTLayout{grid-template-columns:1fr}
+  .historySidebar{
+    min-height:auto;
+    max-height:220px;
+  }
+  .historyList{max-height:100px}
+  .chatMain{min-height:620px}
+}
+@media(max-width:650px){
+  .chatTopBar .ghost{display:none}
+  .chatMain .messages{padding:20px 12px}
+  .composerArea{padding:10px}
+  .bubble{max-width:92%}
+  .welcomeChat h2{font-size:21px}
+}
 </style>
 </head>
 <body>
@@ -27,11 +258,11 @@ html.light .oea-logo-only{color:#2563eb!important}
   <header class="header">
     <div class="brand">
       <div class="logo">✦</div>
-      <div><div class="brandName"><span class="oea-logo-only">OEA</span><button id="oeaLogoThemeToggle" type="button" title="Changer la couleur de OEA" aria-label="Changer la couleur de OEA" style="border:0;background:transparent;color:inherit;cursor:pointer;font-size:16px;margin-left:8px">☀️</button></div><div class="brandSub">Ton assistant d'apprentissage</div></div>
+      <div><div class="brandName">OEA</div><div class="brandSub">Ton assistant d'apprentissage</div></div>
     </div>
     <nav class="modeNav" aria-label="Choix du mode">
       <button class="modeBtn revision active" id="revisionTab" onclick="switchMode('revision')">📖 IA Révision</button>
-      <button class="modeBtn chat" id="chatTab" onclick="switchMode('chat')">💬 IA Questions</button>
+      <button class="modeBtn chat" id="chatTab" onclick="switchMode('chat')"><img class="chatNavImage" src="ia-question-photo.jpeg" alt=""><span>IA Questions</span></button>
     </nav>
     <button class="miniBtn" onclick="resetAll()">↻ Nouvelle session</button>
   </header>
@@ -78,37 +309,68 @@ html.light .oea-logo-only{color:#2563eb!important}
       <section id="result" class="box result hidden"><div class="resultInner" id="resultBox"></div></section>
     </section>
 
+
     <!-- CHAT MODE -->
     <section id="chatView" class="view">
-      <div class="chatView">
-        <div class="box chatBox">
-          <div class="chatHead">
-            <div class="chatTitle"><div class="chatIcon">💬</div><div><h2>IA Questions</h2><p>Pose-moi une question, demande une explication ou aide-toi de ton cours.</p></div></div>
-            <button class="ghost" onclick="clearChat()">Effacer</button>
+      <div class="chatGPTLayout">
+        <aside class="historySidebar box">
+          <div class="historyTop">
+            <button class="newChatBtn" onclick="newChat()">＋ Nouvelle discussion</button>
           </div>
+          <div class="historyTitle">Historique</div>
+          <div class="historyList" id="historyList"></div>
+          <div class="historyBottom">
+            <div class="profileMini">
+              <img src="ia-question-photo.jpeg" alt="" class="profileAvatar">
+              <div>
+                <strong>OEA</strong>
+                <span>Assistant d'apprentissage</span>
+              </div>
+            </div>
+            <button class="clearHistoryBtn" onclick="clearHistory()">Supprimer l'historique</button>
+          </div>
+        </aside>
+
+        <div class="chatMain box">
+          <div class="chatTopBar">
+            <div class="chatTopTitle">
+              <div class="chatTopIcon">✦</div>
+              <div>
+                <h2>IA Questions</h2>
+                <p>Discute avec OEA, comme avec un assistant.</p>
+              </div>
+            </div>
+            <button class="ghost" onclick="newChat()">Nouvelle discussion</button>
+          </div>
+
           <div class="messages" id="messages">
-            <div class="bubble ai fade">Salut 👋 Je suis OEA.<br><br>Pose-moi une question sur ton cours ou sur une notion que tu veux comprendre.</div>
+            <div class="welcomeChat">
+              <div class="welcomeIcon">✦</div>
+              <h2>Comment puis-je t'aider ?</h2>
+              <p>Pose-moi une question, demande une explication ou demande-moi de créer une image.</p>
+              <div class="suggestions">
+                <button class="suggestion" onclick="askExample('Explique-moi cette notion simplement.')">📚 Explique-moi une notion</button>
+                <button class="suggestion" onclick="askExample('Aide-moi à réviser mon cours.')">🧠 Aide-moi à réviser</button>
+                <button class="suggestion" onclick="activateImageMode()">🎨 Créer une image</button>
+              </div>
+            </div>
           </div>
-          <div class="composerWrap">
-            <div class="chatComposer">
-              <label class="attach" title="Ajouter des pages de cours">📎<input id="chatImageInput" type="file" accept="image/*" multiple></label>
-              <textarea id="chatInput" placeholder="Écris ta question…" rows="1"></textarea>
+
+          <div class="composerArea">
+            <div class="attachedPreview" id="attachedPreview"></div>
+            <div class="composer">
+              <button class="composerIcon" type="button" id="chatAttachBtn" title="Ajouter une photo de cours">📎
+                <input id="chatImageInput" type="file" accept="image/*" multiple>
+              </button>
+
+              <button class="composerIcon" type="button" id="imageModeBtn" onclick="toggleImageMode()" title="Créer une image">🎨</button>
+
+              <textarea id="chatInput" placeholder="Message à OEA..." rows="1"></textarea>
               <button class="send" id="sendBtn" onclick="sendChat()">➤</button>
             </div>
-            <div class="chatHint" id="chatHint">Aucune page de cours jointe.</div>
+            <div class="composerHint" id="composerHint">OEA peut répondre à tes questions et utiliser les pages de ton cours.</div>
           </div>
         </div>
-
-        <aside class="box chatSide">
-          <h3>💡 Exemples</h3>
-          <p>Tu peux écrire naturellement, comme avec un assistant.</p>
-          <div class="help">
-            <button class="helpBtn" onclick="askExample('Explique-moi cette notion simplement.')">« Explique-moi cette notion simplement. »</button>
-            <button class="helpBtn" onclick="askExample('Fais-moi un exemple pour mieux comprendre.')">« Donne-moi un exemple. »</button>
-            <button class="helpBtn" onclick="askExample('Pose-moi une petite question pour vérifier si j’ai compris.')">« Vérifie si j’ai compris. »</button>
-          </div>
-          <div class="context">📷 Ajoute des pages avec <b>📎</b> et OEA pourra s'en servir comme contexte pour répondre.</div>
-        </aside>
       </div>
     </section>
   </main>
@@ -116,56 +378,572 @@ html.light .oea-logo-only{color:#2563eb!important}
 </div></div>
 
 <script>
-const state={files:[],images:[],mode:'revision',quiz:[],qIndex:0,score:0,messages:[]};
+const state={
+  files:[],
+  images:[],
+  mode:'revision',
+  quiz:[],
+  qIndex:0,
+  score:0,
+  messages:[],
+  imageMode:false,
+  currentChatId:null,
+  history:[]
+};
+
 const $=id=>document.getElementById(id);
-const drop=$('dropZone'); const fileInput=$('fileInput');
+
+const drop=$('dropZone');
+const fileInput=$('fileInput');
+
 fileInput.addEventListener('change',e=>addFiles([...e.target.files]));
-['dragenter','dragover'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.add('drag')}));
-['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{e.preventDefault();drop.classList.remove('drag')}));
+['dragenter','dragover'].forEach(t=>drop.addEventListener(t,e=>{
+  e.preventDefault();
+  drop.classList.add('drag')
+}));
+['dragleave','drop'].forEach(t=>drop.addEventListener(t,e=>{
+  e.preventDefault();
+  drop.classList.remove('drag')
+}));
 drop.addEventListener('drop',e=>addFiles([...e.dataTransfer.files]));
-function addFiles(fs){const imgs=fs.filter(f=>f.type.startsWith('image/'));state.files=[...state.files,...imgs].slice(0,8);state.images=[];renderFiles();$('activity').textContent=state.files.length+' photo(s) prête(s) pour OEA.';}
-function renderFiles(){const row=$('previewRow');row.innerHTML='';state.files.forEach(f=>{const img=document.createElement('img');img.className='thumb';img.alt=f.name;img.title=f.name;img.src=URL.createObjectURL(f);row.appendChild(img)});if(state.files.length)row.insertAdjacentHTML('beforeend',`<div class="pill">${state.files.length}/8 pages</div>`)}
-function imageData(file){return new Promise((resolve,reject)=>{const img=new Image(),r=new FileReader();r.onload=()=>{img.onload=()=>{const max=1400;let w=img.width,h=img.height;const k=Math.min(1,max/Math.max(w,h));w=Math.max(1,Math.round(w*k));h=Math.max(1,Math.round(h*k));const c=document.createElement('canvas');c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);resolve(c.toDataURL('image/jpeg',.76))};img.onerror=reject;img.src=r.result};r.onerror=reject;r.readAsDataURL(file)})}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
-function md(s){let t=esc(s);t=t.replace(/^### (.*)$/gm,'<h3>$1</h3>').replace(/^## (.*)$/gm,'<h2>$1</h2>').replace(/^# (.*)$/gm,'<h2>$1</h2>').replace(/^[-•] (.*)$/gm,'<li>$1</li>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n\n/g,'<br><br>').replace(/\n/g,'<br>');return t}
-function switchMode(mode){state.mode=mode;const rev=mode==='revision';$('revisionTab').classList.toggle('active',rev);$('chatTab').classList.toggle('active',!rev);$('revisionView').classList.toggle('active',rev);$('chatView').classList.toggle('active',!rev);if(!rev)setTimeout(()=>$('chatInput').focus(),120)}
-async function ensureImages(){if(state.images.length)return state.images;state.images=[];for(const f of state.files)state.images.push(await imageData(f));return state.images}
-async function generate(action){const result=$('result'),box=$('resultBox');result.classList.remove('hidden');box.innerHTML='<div class="spinner"></div><div style="text-align:center;color:#94abc2">🤖 OEA analyse tes pages…</div>';if(!state.files.length){box.innerHTML='<div class="empty">📷 Ajoute d’abord au moins une photo de ton cours.</div>';return}document.querySelectorAll('.action').forEach(b=>b.disabled=true);try{const images=await ensureImages();const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action,images})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Erreur serveur');if(action==='course')showCourse(data.text);else if(action==='quiz')showQuiz(data.text);else showCards(data.text)}catch(e){box.innerHTML=`<div class="empty" style="color:#ff9aa2">❌ ${esc(e.message)}</div>`}finally{document.querySelectorAll('.action').forEach(b=>b.disabled=false)}}
-function safeJSON(raw){let s=String(raw||'').trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/\s*```$/,'').trim();try{return JSON.parse(s)}catch{const a=s.indexOf('{'),b=s.lastIndexOf('}');if(a>=0&&b>a)try{return JSON.parse(s.slice(a,b+1))}catch{}throw new Error('Réponse IA invalide. Réessaie avec des photos plus nettes.')}}
-function resultHeader(title,sub=''){return `<div class="resultToolbar"><div><h3>${title}</h3>${sub?`<div style="color:#8097b1;font-size:12px;margin-top:3px">${sub}</div>`:''}</div><button class="ghost" onclick="resetResult()">↻ Fermer</button></div>`}
-function showCourse(text){$('resultBox').innerHTML=resultHeader('📄 Ta fiche de révision IA','Basée uniquement sur les photos envoyées')+`<div class="resultContent">${md(text)}</div>`}
-function showCards(raw){const d=safeJSON(raw),cards=d.cards||[];$('resultBox').innerHTML=resultHeader('🗂️ Tes flashcards','Clique sur une carte pour la retourner')+`<div class="flashGrid">${cards.map((c,i)=>`<div class="flash" onclick="this.classList.toggle('flip')"><div class="flashInner"><div class="flashFace front">${esc(c.question||('Carte '+(i+1)))}</div><div class="flashFace back">${esc(c.answer||'')}</div></div></div>`).join('')}</div>`}
-function showQuiz(raw){const d=safeJSON(raw);state.quiz=d.questions||[];state.qIndex=0;state.score=0;renderQuestion()}
-function renderQuestion(){const box=$('resultBox');if(state.qIndex>=state.quiz.length){box.innerHTML=resultHeader('🎉 Quiz terminé',`Score final : ${state.score} / ${state.quiz.length}`)+`<div class="score">Bravo pour ton entraînement !</div><div style="margin-top:12px"><button class="ghost" onclick="state.qIndex=0;state.score=0;renderQuestion()">↻ Refaire le quiz</button></div>`;return}const q=state.quiz[state.qIndex];box.innerHTML=resultHeader(`❔ Question ${state.qIndex+1} / ${state.quiz.length}`)+`<div class="quizBox"><div style="font-size:19px;font-weight:850">${esc(q.question)}</div><div id="choices">${(q.choices||[]).map((c,i)=>`<button class="choice" onclick="answerQuestion(${i})">${String.fromCharCode(65+i)}. ${esc(c)}</button>`).join('')}</div><div id="feedback" style="min-height:36px;color:#bcd0e5"></div></div>`}
-function answerQuestion(i){const q=state.quiz[state.qIndex],btns=[...document.querySelectorAll('.choice')];btns.forEach(b=>b.disabled=true);if(i===q.answer){state.score++;btns[i]?.classList.add('correct');$('feedback').innerHTML='✅ Correct ! '+esc(q.explanation||'')}else{btns[i]?.classList.add('wrong');btns[q.answer]?.classList.add('correct');$('feedback').innerHTML='❌ '+esc(q.explanation||'')}$('feedback').insertAdjacentHTML('beforeend','<br><button class="ghost" style="margin-top:8px" onclick="state.qIndex++;renderQuestion()">Question suivante →</button>')}
-function resetResult(){$('result').classList.add('hidden');$('resultBox').innerHTML=''}
-function clearChat(){state.messages=[];$('messages').innerHTML='<div class="bubble ai fade">Conversation effacée ✨<br><br>Pose-moi une nouvelle question.</div>'}
-async function sendChat(){const input=$('chatInput'),text=input.value.trim();if(!text)return;addBubble('me',text);input.value='';$('sendBtn').disabled=true;const loading=document.createElement('div');loading.className='bubble ai fade';loading.id='chatLoading';loading.innerHTML='<div class="spinner"></div>';$('messages').appendChild(loading);$('messages').scrollTop=$('messages').scrollHeight;try{let images=await ensureImages();state.messages.push({role:'user',text});const userCount=state.messages.filter(m=>m.role==='user').length;const casual=/^(bonjour|bonsoir|salut|coucou|hello|merci|ça va|ca va|qui es[- ]tu|comment ça va)[!? .]*$/i.test(text);const firstCourseMessage=userCount===1;const includeImages=images.length>0&&(firstCourseMessage||!casual&&/(cours|photo|page|chapitre|leçon|lecon|devoir|contrôle|controle|exercice|explique|définition|definition|notion|résume|resume|révise|revise|révision|revision|ce document|cette page|dans mon cours)/i.test(text));const r=await fetch('/api/generate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'chat',messages:state.messages.slice(-8),images:includeImages?images:[]})});const data=await r.json();if(!r.ok)throw new Error(data.error||'Erreur serveur');loading.remove();addBubble('ai',data.text||'Je n’ai pas reçu de réponse.');state.messages.push({role:'assistant',text:data.text||''})}catch(e){loading.remove();addBubble('ai','❌ '+e.message)}finally{$('sendBtn').disabled=false;input.focus()}}
-function addBubble(who,text){const b=document.createElement('div');b.className='bubble '+(who==='me'?'me':'ai')+' fade';b.innerHTML=who==='ai'?md(text):esc(text);$('messages').appendChild(b);$('messages').scrollTop=$('messages').scrollHeight}
-function askExample(text){$('chatInput').value=text;$('chatInput').focus()}
-$('chatInput').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat()}});
-$('chatImageInput').addEventListener('change',async e=>{const fs=[...e.target.files].filter(f=>f.type.startsWith('image/'));if(!fs.length)return;state.files=[...state.files,...fs].slice(0,8);state.images=[];for(const f of state.files)state.images.push(await imageData(f));$('chatHint').textContent=state.files.length+' page(s) de cours ajoutée(s) comme contexte.';});
-function resetAll(){state.files=[];state.images=[];state.quiz=[];state.qIndex=0;state.score=0;state.messages=[];$('previewRow').innerHTML='';$('fileInput').value='';$('chatImageInput').value='';$('activity').textContent='Aucune photo sélectionnée pour le moment.';$('chatHint').textContent='Aucune page de cours jointe.';resetResult();clearChat();switchMode('revision');}
-</script>
 
-<script>
-(() => {
-  const logo = document.querySelector('.oea-logo-only');
-  const btn = document.getElementById('oeaLogoThemeToggle');
-  if (!logo || !btn) return;
-  const apply = light => {
-    document.documentElement.classList.toggle('light', light);
-    btn.textContent = light ? '🌙' : '☀️';
-  };
-  const saved = localStorage.getItem('oea-logo-theme') === 'light';
-  apply(saved);
-  btn.addEventListener('click', () => {
-    const light = !document.documentElement.classList.contains('light');
-    localStorage.setItem('oea-logo-theme', light ? 'light' : 'dark');
-    apply(light);
+function addFiles(fs){
+  const imgs=fs.filter(f=>f.type.startsWith('image/'));
+  state.files=[...state.files,...imgs].slice(0,8);
+  state.images=[];
+  renderFiles();
+  $('activity').textContent=state.files.length+' photo(s) prête(s) pour OEA.';
+}
+
+function renderFiles(){
+  const row=$('previewRow');
+  row.innerHTML='';
+  state.files.forEach(f=>{
+    const img=document.createElement('img');
+    img.className='thumb';
+    img.alt=f.name;
+    img.title=f.name;
+    img.src=URL.createObjectURL(f);
+    row.appendChild(img);
   });
-})();
-</script>
+  if(state.files.length)row.insertAdjacentHTML('beforeend',`<div class="pill">${state.files.length}/8 pages</div>`);
+}
 
+function imageData(file){
+  return new Promise((resolve,reject)=>{
+    const img=new Image(),r=new FileReader();
+    r.onload=()=>{
+      img.onload=()=>{
+        const max=1400;
+        let w=img.width,h=img.height;
+        const k=Math.min(1,max/Math.max(w,h));
+        w=Math.max(1,Math.round(w*k));
+        h=Math.max(1,Math.round(h*k));
+        const c=document.createElement('canvas');
+        c.width=w;c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        resolve(c.toDataURL('image/jpeg',.76));
+      };
+      img.onerror=reject;
+      img.src=r.result;
+    };
+    r.onerror=reject;
+    r.readAsDataURL(file);
+  });
+}
+
+function esc(s){
+  return String(s??'').replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'
+  }[c]));
+}
+
+function md(s){
+  let t=esc(s);
+  t=t.replace(/^### (.*)$/gm,'<h3>$1</h3>')
+    .replace(/^## (.*)$/gm,'<h2>$1</h2>')
+    .replace(/^# (.*)$/gm,'<h2>$1</h2>')
+    .replace(/^[-•] (.*)$/gm,'<li>$1</li>')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\n/g,'<br>');
+  return t;
+}
+
+function switchMode(mode){
+  state.mode=mode;
+  const rev=mode==='revision';
+  $('revisionTab').classList.toggle('active',rev);
+  $('chatTab').classList.toggle('active',!rev);
+  $('revisionView').classList.toggle('active',rev);
+  $('chatView').classList.toggle('active',!rev);
+  if(!rev){
+    loadHistory();
+    setTimeout(()=>$('chatInput').focus(),120);
+  }
+}
+
+async function ensureImages(){
+  if(state.images.length)return state.images;
+  state.images=[];
+  for(const f of state.files)state.images.push(await imageData(f));
+  return state.images;
+}
+
+async function generate(action){
+  const result=$('result'),box=$('resultBox');
+  result.classList.remove('hidden');
+  box.innerHTML='<div class="spinner"></div><div style="text-align:center;color:#94abc2">🤖 OEA analyse tes pages…</div>';
+  if(!state.files.length){
+    box.innerHTML='<div class="empty">📷 Ajoute d’abord au moins une photo de ton cours.</div>';
+    return;
+  }
+  document.querySelectorAll('.action').forEach(b=>b.disabled=true);
+  try{
+    const images=await ensureImages();
+    const r=await fetch('/api/generate',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action,images})
+    });
+    const data=await r.json();
+    if(!r.ok)throw new Error(data.error||'Erreur serveur');
+    if(action==='course')showCourse(data.text);
+    else if(action==='quiz')showQuiz(data.text);
+    else showCards(data.text);
+  }catch(e){
+    box.innerHTML=`<div class="empty" style="color:#ff9aa2">❌ ${esc(e.message)}</div>`;
+  }finally{
+    document.querySelectorAll('.action').forEach(b=>b.disabled=false);
+  }
+}
+
+function safeJSON(raw){
+  let s=String(raw||'').trim()
+    .replace(/^```json\s*/i,'')
+    .replace(/^```\s*/,'')
+    .replace(/\s*```$/,'').trim();
+  try{return JSON.parse(s)}
+  catch{
+    const a=s.indexOf('{'),b=s.lastIndexOf('}');
+    if(a>=0&&b>a)try{return JSON.parse(s.slice(a,b+1))}catch{}
+    throw new Error('Réponse IA invalide. Réessaie avec des photos plus nettes.');
+  }
+}
+
+function resultHeader(title,sub=''){
+  return `<div class="resultToolbar"><div><h3>${title}</h3>${sub?`<div style="color:#8097b1;font-size:12px;margin-top:3px">${sub}</div>`:''}</div><button class="ghost" onclick="resetResult()">↻ Fermer</button></div>`;
+}
+
+function showCourse(text){
+  $('resultBox').innerHTML=resultHeader('📄 Ta fiche de révision IA','Basée uniquement sur les photos envoyées')+`<div class="resultContent">${md(text)}</div>`;
+}
+
+function showCards(raw){
+  const d=safeJSON(raw),cards=d.cards||[];
+  $('resultBox').innerHTML=resultHeader('🗂️ Tes flashcards','Clique sur une carte pour la retourner')+
+    `<div class="flashGrid">${cards.map((c,i)=>`<div class="flash" onclick="this.classList.toggle('flip')"><div class="flashInner"><div class="flashFace front">${esc(c.question||('Carte '+(i+1)))}</div><div class="flashFace back">${esc(c.answer||'')}</div></div></div>`).join('')}</div>`;
+}
+
+function showQuiz(raw){
+  const d=safeJSON(raw);
+  state.quiz=d.questions||[];
+  state.qIndex=0;
+  state.score=0;
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const box=$('resultBox');
+  if(state.qIndex>=state.quiz.length){
+    box.innerHTML=resultHeader('🎉 Quiz terminé',`Score final : ${state.score} / ${state.quiz.length}`)+
+      `<div class="score">Bravo pour ton entraînement !</div><div style="margin-top:12px"><button class="ghost" onclick="state.qIndex=0;state.score=0;renderQuestion()">↻ Refaire le quiz</button></div>`;
+    return;
+  }
+  const q=state.quiz[state.qIndex];
+  box.innerHTML=resultHeader(`❔ Question ${state.qIndex+1} / ${state.quiz.length}`)+
+    `<div class="quizBox"><div style="font-size:19px;font-weight:850">${esc(q.question)}</div><div id="choices">${(q.choices||[]).map((c,i)=>`<button class="choice" onclick="answerQuestion(${i})">${String.fromCharCode(65+i)}. ${esc(c)}</button>`).join('')}</div><div id="feedback" style="min-height:36px;color:#bcd0e5"></div></div>`;
+}
+
+function answerQuestion(i){
+  const q=state.quiz[state.qIndex],btns=[...document.querySelectorAll('.choice')];
+  btns.forEach(b=>b.disabled=true);
+  if(i===q.answer){
+    state.score++;
+    btns[i]?.classList.add('correct');
+    $('feedback').innerHTML='✅ Correct ! '+esc(q.explanation||'');
+  }else{
+    btns[i]?.classList.add('wrong');
+    btns[q.answer]?.classList.add('correct');
+    $('feedback').innerHTML='❌ '+esc(q.explanation||'');
+  }
+  $('feedback').insertAdjacentHTML('beforeend','<br><button class="ghost" style="margin-top:8px" onclick="state.qIndex++;renderQuestion()">Question suivante →</button>');
+}
+
+function resetResult(){
+  $('result').classList.add('hidden');
+  $('resultBox').innerHTML='';
+}
+
+/* ===== Historique ===== */
+
+function historyKey(){
+  return 'oea-chat-history-v1';
+}
+
+function loadHistory(){
+  try{
+    state.history=JSON.parse(localStorage.getItem(historyKey())||'[]');
+    if(!Array.isArray(state.history))state.history=[];
+  }catch{
+    state.history=[];
+  }
+  renderHistory();
+}
+
+function saveHistory(){
+  localStorage.setItem(historyKey(),JSON.stringify(state.history.slice(-30)));
+  renderHistory();
+}
+
+function makeChatId(){
+  return 'chat-'+Date.now()+'-'+Math.random().toString(36).slice(2,8);
+}
+
+function titleFromMessages(messages){
+  const first=messages.find(m=>m.role==='user'&&m.text);
+  if(!first)return 'Nouvelle discussion';
+  const clean=String(first.text).replace(/\s+/g,' ').trim();
+  return clean.length>42?clean.slice(0,42)+'…':clean;
+}
+
+function ensureCurrentChat(){
+  if(state.currentChatId)return;
+  state.currentChatId=makeChatId();
+  state.history.push({
+    id:state.currentChatId,
+    title:'Nouvelle discussion',
+    messages:[],
+    createdAt:Date.now()
+  });
+}
+
+function persistCurrentChat(){
+  if(!state.currentChatId)return;
+  const item=state.history.find(h=>h.id===state.currentChatId);
+  if(!item)return;
+  item.messages=state.messages.map(m=>({role:m.role,text:m.text}));
+  item.title=titleFromMessages(state.messages);
+  item.updatedAt=Date.now();
+  saveHistory();
+}
+
+function renderHistory(){
+  const list=$('historyList');
+  if(!list)return;
+  list.innerHTML='';
+  if(!state.history.length){
+    list.innerHTML='<div class="historyEmpty">Tes discussions apparaîtront ici.</div>';
+    return;
+  }
+  const items=[...state.history].sort((a,b)=>(b.updatedAt||b.createdAt||0)-(a.updatedAt||a.createdAt||0));
+  items.forEach(item=>{
+    const b=document.createElement('button');
+    b.className='historyItem'+(item.id===state.currentChatId?' active':'');
+    b.textContent=item.title||'Nouvelle discussion';
+    b.title=item.title||'Nouvelle discussion';
+    b.onclick=()=>loadChat(item.id);
+    list.appendChild(b);
+  });
+}
+
+function loadChat(id){
+  const item=state.history.find(h=>h.id===id);
+  if(!item)return;
+  state.currentChatId=id;
+  state.messages=Array.isArray(item.messages)?item.messages.map(m=>({role:m.role,text:m.text})):[];
+  renderMessagesFromState();
+  renderHistory();
+}
+
+function renderMessagesFromState(){
+  const box=$('messages');
+  box.innerHTML='';
+  if(!state.messages.length){
+    box.innerHTML=`<div class="welcomeChat">
+      <div class="welcomeIcon">✦</div>
+      <h2>Comment puis-je t'aider ?</h2>
+      <p>Pose-moi une question, demande une explication ou demande-moi de créer une image.</p>
+      <div class="suggestions">
+        <button class="suggestion" onclick="askExample('Explique-moi cette notion simplement.')">📚 Explique-moi une notion</button>
+        <button class="suggestion" onclick="askExample('Aide-moi à réviser mon cours.')">🧠 Aide-moi à réviser</button>
+        <button class="suggestion" onclick="activateImageMode()">🎨 Créer une image</button>
+      </div>
+    </div>`;
+    return;
+  }
+  state.messages.forEach(m=>addBubble(m.role==='user'?'me':'ai',m.text,false));
+  box.scrollTop=box.scrollHeight;
+}
+
+function newChat(){
+  state.currentChatId=null;
+  state.messages=[];
+  state.imageMode=false;
+  setImageModeUI();
+  renderMessagesFromState();
+  renderHistory();
+  $('chatInput').value='';
+  $('attachedPreview').innerHTML='';
+  $('chatImageInput').value='';
+  $('composerHint').textContent='OEA peut répondre à tes questions et utiliser les pages de ton cours.';
+  setTimeout(()=>$('chatInput').focus(),80);
+}
+
+function clearHistory(){
+  if(!confirm('Supprimer tout l’historique des discussions ?'))return;
+  state.history=[];
+  state.currentChatId=null;
+  state.messages=[];
+  localStorage.removeItem(historyKey());
+  renderMessagesFromState();
+  renderHistory();
+}
+
+/* ===== Chat ===== */
+
+function toggleImageMode(){
+  state.imageMode=!state.imageMode;
+  setImageModeUI();
+}
+
+function activateImageMode(){
+  state.imageMode=true;
+  setImageModeUI();
+  $('chatInput').focus();
+}
+
+function setImageModeUI(){
+  $('imageModeBtn')?.classList.toggle('active',state.imageMode);
+  $('chatView')?.classList.toggle('modeImage',state.imageMode);
+  if($('composerHint')){
+    $('composerHint').textContent=state.imageMode
+      ? '🎨 Mode image : décris ce que tu veux créer, puis envoie.'
+      : 'OEA peut répondre à tes questions et utiliser les pages de ton cours.';
+  }
+}
+
+function scrollMessages(){
+  const box=$('messages');
+  box.scrollTop=box.scrollHeight;
+}
+
+function addBubble(who,text,scroll=true){
+  const b=document.createElement('div');
+  b.className='bubble '+(who==='me'?'me':'ai')+' fade';
+  b.innerHTML=who==='ai'?md(text):esc(text);
+  $('messages').appendChild(b);
+  if(scroll)scrollMessages();
+}
+
+function addImageBubble(dataUrl,prompt){
+  const wrap=document.createElement('div');
+  wrap.className='imageBubble fade';
+
+  const img=document.createElement('img');
+  img.src=dataUrl;
+  img.alt='Image générée par OEA';
+  img.loading='lazy';
+
+  const caption=document.createElement('div');
+  caption.className='imageCaption';
+  caption.textContent='Image générée par OEA';
+
+  const actions=document.createElement('div');
+  actions.className='imageActions';
+
+  const open=document.createElement('button');
+  open.className='imageAction';
+  open.textContent='↗ Ouvrir';
+  open.onclick=()=>window.open(dataUrl,'_blank');
+
+  const save=document.createElement('a');
+  save.className='imageAction';
+  save.textContent='⬇ Enregistrer';
+  save.href=dataUrl;
+  save.download='oea-image.png';
+
+  actions.appendChild(open);
+  actions.appendChild(save);
+
+  wrap.appendChild(img);
+  wrap.appendChild(caption);
+  wrap.appendChild(actions);
+  $('messages').appendChild(wrap);
+  scrollMessages();
+}
+
+function askExample(text){
+  state.imageMode=false;
+  setImageModeUI();
+  $('chatInput').value=text;
+  $('chatInput').focus();
+}
+
+async function sendChat(){
+  const input=$('chatInput');
+  const text=input.value.trim();
+  if(!text)return;
+
+  ensureCurrentChat();
+
+  $('sendBtn').disabled=true;
+  const welcome=$('messages').querySelector('.welcomeChat');
+  if(welcome)welcome.remove();
+
+  addBubble('me',text);
+  input.value='';
+  input.style.height='auto';
+
+  if(state.imageMode){
+    const loading=document.createElement('div');
+    loading.className='bubble ai fade';
+    loading.id='chatLoading';
+    loading.innerHTML='<div class="spinner"></div><div style="text-align:center;color:#93a9bd">🎨 OEA crée ton image…</div>';
+    $('messages').appendChild(loading);
+    scrollMessages();
+
+    try{
+      const r=await fetch('/api/generate',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          action:'image',
+          imagePrompt:text
+        })
+      });
+      const data=await r.json();
+      if(!r.ok)throw new Error(data.error||'Erreur serveur');
+      loading.remove();
+      addImageBubble(data.image,text);
+      state.messages.push({role:'user',text});
+      state.messages.push({role:'assistant',text:'[Image générée par OEA]'});
+      state.imageMode=false;
+      setImageModeUI();
+      persistCurrentChat();
+    }catch(e){
+      loading.remove();
+      addBubble('ai','❌ '+e.message);
+      state.messages.push({role:'user',text});
+      state.messages.push({role:'assistant',text:'Erreur lors de la génération de l’image : '+e.message});
+      persistCurrentChat();
+    }finally{
+      $('sendBtn').disabled=false;
+      input.focus();
+    }
+    return;
+  }
+
+  const loading=document.createElement('div');
+  loading.className='bubble ai fade';
+  loading.id='chatLoading';
+  loading.innerHTML='<div class="spinner"></div>';
+  $('messages').appendChild(loading);
+  scrollMessages();
+
+  try{
+    const images=await ensureImages();
+    state.messages.push({role:'user',text});
+
+    const casual=/^(bonjour|bonsoir|salut|coucou|hello|merci|ça va|ca va|qui es[- ]tu|comment ça va)[!? .]*$/i.test(text);
+    const includeImages=images.length>0&&!casual&&/(cours|photo|page|chapitre|leçon|lecon|devoir|contrôle|controle|exercice|explique|définition|definition|notion|résume|resume|révise|revise|révision|revision|ce document|cette page|dans mon cours)/i.test(text);
+
+    const r=await fetch('/api/generate',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        action:'chat',
+        messages:state.messages.slice(-10),
+        images:includeImages?images:[]
+      })
+    });
+    const data=await r.json();
+    if(!r.ok)throw new Error(data.error||'Erreur serveur');
+
+    loading.remove();
+    const answer=data.text||'Je n’ai pas reçu de réponse.';
+    addBubble('ai',answer);
+    state.messages.push({role:'assistant',text:answer});
+    persistCurrentChat();
+  }catch(e){
+    loading.remove();
+    const err='❌ '+e.message;
+    addBubble('ai',err);
+    state.messages.push({role:'assistant',text:err});
+    persistCurrentChat();
+  }finally{
+    $('sendBtn').disabled=false;
+    input.focus();
+  }
+}
+
+$('chatInput').addEventListener('input',e=>{
+  e.target.style.height='auto';
+  e.target.style.height=Math.min(e.target.scrollHeight,160)+'px';
+});
+
+$('chatInput').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!e.shiftKey){
+    e.preventDefault();
+    sendChat();
+  }
+});
+
+$('chatImageInput').addEventListener('change',async e=>{
+  const fs=[...e.target.files].filter(f=>f.type.startsWith('image/')).slice(0,8);
+  if(!fs.length)return;
+
+  state.files=[...fs];
+  state.images=[];
+  await ensureImages();
+
+  const preview=$('attachedPreview');
+  preview.innerHTML='';
+  fs.forEach(f=>{
+    const img=document.createElement('img');
+    img.className='chatAttachmentThumb';
+    img.src=URL.createObjectURL(f);
+    img.alt=f.name;
+    preview.appendChild(img);
+  });
+
+  $('composerHint').textContent=state.files.length+' page(s) de cours ajoutée(s).';
+});
+
+function resetAll(){
+  state.files=[];
+  state.images=[];
+  state.quiz=[];
+  state.qIndex=0;
+  state.score=0;
+  state.messages=[];
+  state.currentChatId=null;
+  state.imageMode=false;
+  $('previewRow').innerHTML='';
+  $('fileInput').value='';
+  $('chatImageInput').value='';
+  $('attachedPreview').innerHTML='';
+  $('activity').textContent='Aucune photo sélectionnée pour le moment.';
+  $('composerHint').textContent='OEA peut répondre à tes questions et utiliser les pages de ton cours.';
+  resetResult();
+  setImageModeUI();
+  renderMessagesFromState();
+  switchMode('revision');
+  newChat();
+}
+
+loadHistory();
+newChat();
+</script>
 </body>
 </html>
