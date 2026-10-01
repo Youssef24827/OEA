@@ -251,6 +251,12 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
   .bubble{max-width:92%}
   .welcomeChat h2{font-size:21px}
 }
+
+.chatTopIcon img{
+  width:24px;
+  height:24px;
+  display:block;
+}
 </style>
 </head>
 <body>
@@ -262,7 +268,7 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
     </div>
     <nav class="modeNav" aria-label="Choix du mode">
       <button class="modeBtn revision active" id="revisionTab" onclick="switchMode('revision')">📖 IA Révision</button>
-      <button class="modeBtn chat" id="chatTab" onclick="switchMode('chat')"><img class="chatNavImage" src="ia-question-photo.jpeg" alt=""><span>IA Questions</span></button>
+      <button class="modeBtn chat" id="chatTab" onclick="switchMode('chat')"><img class="chatNavImage" src="message-icon.svg" alt=""><span>IA Questions</span></button>
     </nav>
     <button class="miniBtn" onclick="resetAll()">↻ Nouvelle session</button>
   </header>
@@ -334,7 +340,7 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
         <div class="chatMain box">
           <div class="chatTopBar">
             <div class="chatTopTitle">
-              <div class="chatTopIcon">✦</div>
+              <div class="chatTopIcon"><img src="message-icon.svg" alt=""></div>
               <div>
                 <h2>IA Questions</h2>
                 <p>Discute avec OEA, comme avec un assistant.</p>
