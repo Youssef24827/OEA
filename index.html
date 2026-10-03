@@ -18,7 +18,7 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
 @media(max-width:1000px){.uploadGrid{grid-template-columns:1fr}.chatView{grid-template-columns:1fr}.chatSide{display:none}.chatBox{height:calc(100vh - 170px);min-height:560px}.actions{grid-template-columns:1fr 1fr}}
 @media(max-width:680px){.shell{padding:12px}.header{align-items:flex-start;flex-wrap:wrap}.brandSub{display:none}.modeNav{width:100%;order:3}.modeBtn{flex:1;padding:11px 8px}.miniBtn{padding:9px 10px}.hero{padding:23px;border-radius:21px}.heroStats{grid-template-columns:1fr}.actions{grid-template-columns:1fr}.hero h1{font-size:35px}.chatBox{min-height:560px}.bubble{max-width:92%}.resultInner,.boxPad{padding:17px}.drop{padding:28px 14px}}
 
-/* Photo choisie par l'utilisateur pour le bouton IA Questions */
+/* Photo choisie par l'utilisateur pour le bouton Question OEA */
 .modeBtn.chat {
   display: inline-flex;
   align-items: center;
@@ -32,7 +32,7 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
   flex: 0 0 28px;
 }
 
-/* ===== OEA V8 — interface IA Questions type assistant + historique ===== */
+/* ===== OEA V8 — interface Question OEA type assistant + historique ===== */
 .chatGPTLayout{
   display:grid;
   grid-template-columns:255px minmax(0,1fr);
@@ -251,6 +251,24 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
   .bubble{max-width:92%}
   .welcomeChat h2{font-size:21px}
 }
+
+/* OEA V9 — navigation simple : Question / Révision */
+.modeNav{
+  min-width:310px;
+  justify-content:center;
+}
+.modeBtn{
+  min-width:125px;
+  text-align:center;
+  letter-spacing:.1px;
+}
+.modeBtn.chat.active{
+  color:#05221c;
+}
+@media(max-width:680px){
+  .modeNav{min-width:0}
+  .modeBtn{min-width:0}
+}
 </style>
 </head>
 <body>
@@ -260,16 +278,21 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
       <div class="logo">✦</div>
       <div><div class="brandName">OEA</div><div class="brandSub">Ton assistant d'apprentissage</div></div>
     </div>
-    <nav class="modeNav" aria-label="Choix du mode">
-      <button class="modeBtn revision active" id="revisionTab" onclick="switchMode('revision')">📖 IA Révision</button>
-      <button class="modeBtn chat" id="chatTab" onclick="switchMode('chat')"><img class="chatNavImage" src="ia-question-photo.jpeg" alt=""><span>IA Questions</span></button>
+    <nav class="modeNav" aria-label="Navigation OEA">
+      <button class="modeBtn chat active" id="chatTab" onclick="switchMode('chat')">
+        <img class="chatNavImage" src="ia-question-photo.jpeg" alt="">
+        <span>Question</span>
+      </button>
+      <button class="modeBtn revision" id="revisionTab" onclick="switchMode('revision')">
+        <span>Révision</span>
+      </button>
     </nav>
     <button class="miniBtn" onclick="resetAll()">↻ Nouvelle session</button>
   </header>
 
   <main class="stage">
     <!-- REVISION MODE -->
-    <section id="revisionView" class="view active">
+    <section id="revisionView" class="view">
       <div class="hero">
         <div class="heroTop">
           <div>
@@ -311,7 +334,7 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
 
 
     <!-- CHAT MODE -->
-    <section id="chatView" class="view">
+    <section id="chatView" class="view active">
       <div class="chatGPTLayout">
         <aside class="historySidebar box">
           <div class="historyTop">
@@ -336,7 +359,7 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
             <div class="chatTopTitle">
               <div class="chatTopIcon">✦</div>
               <div>
-                <h2>IA Questions</h2>
+                <h2>Question</h2>
                 <p>Discute avec OEA, comme avec un assistant.</p>
               </div>
             </div>
@@ -365,7 +388,7 @@ button,input,textarea{font:inherit}.app{min-height:100vh}.shell{max-width:1280px
 
               <button class="composerIcon" type="button" id="imageModeBtn" onclick="toggleImageMode()" title="Créer une image">🎨</button>
 
-              <textarea id="chatInput" placeholder="Décris l’image que tu veux créer..." rows="1"></textarea>
+              <textarea id="chatInput" placeholder="Message à OEA..." rows="1"></textarea>
               <button class="send" id="sendBtn" onclick="sendChat()">➤</button>
             </div>
             <div class="composerHint" id="composerHint">OEA peut répondre à tes questions et utiliser les pages de ton cours.</div>
@@ -727,7 +750,6 @@ function setImageModeUI(){
   $('imageModeBtn')?.classList.toggle('active',state.imageMode);
   $('chatView')?.classList.toggle('modeImage',state.imageMode);
   if($('composerHint')){
-    $('chatInput').placeholder=state.imageMode?'Décris l’image que tu veux créer...':'Message à OEA...';
     $('composerHint').textContent=state.imageMode
       ? '🎨 Mode image : décris ce que tu veux créer, puis envoie.'
       : 'OEA peut répondre à tes questions et utiliser les pages de ton cours.';
@@ -939,11 +961,14 @@ function resetAll(){
   resetResult();
   setImageModeUI();
   renderMessagesFromState();
-  switchMode('revision');
+  if (state.mode === 'chat') switchMode('chat');
+  else switchMode('revision');
   newChat();
 }
 
 loadHistory();
+state.mode='chat';
+switchMode('chat');
 newChat();
 </script>
 </body>
