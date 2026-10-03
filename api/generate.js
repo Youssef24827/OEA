@@ -64,16 +64,16 @@ export default async function handler(req, res) {
   if (!process.env.GEMINI_API_KEY) return json(res, 500, { error: "GEMINI_API_KEY n'est pas configurée sur Vercel." });
 
   try {
-    const { action, images = [], messages = [] } = req.body || {};
+    const { action, images = [], messages = [], imagePrompt = "" } = req.body || {};
     if (!action) return json(res, 400, { error: "Action manquante." });
 
 
     if (action === "image") {
-      const prompt = typeof imagePrompt === "string" ? imagePrompt.trim() : "";
+      const prompt = String(imagePrompt || "").trim();
 
       if (!prompt) {
         return json(res, 400, {
-          error: "Écris une description pour l'image."
+          error: "Écris ce que tu veux que OEA crée comme image."
         });
       }
 
@@ -87,12 +87,10 @@ export default async function handler(req, res) {
           },
           body: JSON.stringify({
             model: "gemini-3.1-flash-image",
-            input: [
-              {
-                type: "text",
-                text: prompt
-              }
-            ]
+            input: prompt,
+            response_format: {
+              type: "image"
+            }
           })
         }
       );
@@ -109,15 +107,18 @@ export default async function handler(req, res) {
         throw err;
       }
 
+      // Official Interactions response shape: interaction.output_image.data
       const generatedImage =
-        imageData?.output_image?.data ||
         imageData?.interaction?.output_image?.data ||
-        imageData?.output?.find?.(item => item?.type === "image")?.data;
+        imageData?.output_image?.data ||
+        imageData?.output?.find?.(
+          item => item?.type === "image" && item?.data
+        )?.data;
 
       if (!generatedImage) {
         console.error("Réponse image inattendue:", imageData);
         return json(res, 500, {
-          error: "Gemini n'a pas renvoyé d'image."
+          error: "OEA n'a pas reçu l'image générée par Gemini."
         });
       }
 
